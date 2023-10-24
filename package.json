@@ -7,20 +7,26 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.38",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
+    "algoliasearch": "^4.18.0",
+    "express": "^4.18.2",
+    "instantsearch.css": "^8.0.0",
     "react": "^18.2.0",
+    "react-compound-slider": "^3.4.0",
     "react-dom": "^18.2.0",
+    "react-instantsearch-dom": "^6.40.1",
+    "react-instantsearch-hooks-web": "^6.45.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:server": "tsc --project ./tsconfig.server.json --outDir ./dist",
+    "start": "node ./build/server.js"
   },
   "eslintConfig": {
     "extends": [
@@ -39,5 +45,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/register": "^7.22.5",
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.3.3",
+    "babel-plugin-transform-assets": "^1.0.2"
   }
 }
