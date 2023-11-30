@@ -1,260 +1,250 @@
 import algoliasearch from 'algoliasearch/lite';
-import React, {useEffect, useRef} from 'react';
-import {
-    Configure,
-    HierarchicalMenu,
-    Hits,
-    HitsPerPage,
-    InstantSearch,
-    Pagination,
-    RefinementList,
-    SearchBox,
-    SortBy,
-    ToggleRefinement,
-    Highlight,
-    Snippet, RangeInput, HierarchicalMenuProps, useInfiniteHits,
-} from 'react-instantsearch-hooks-web';
-import {
-    AlgoliaSvg,
-    ClearFilters,
-    ClearFiltersMobile,
-    NoResults,
-    NoResultsBoundary,
-    Panel,
-    PriceSlider,
-    ResultsNumberMobile,
-    SaveFiltersMobile,
-} from './components/index';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {Configure, InstantSearch, SearchBox, Stats,} from 'react-instantsearch';
+
+import {ClearFiltersMobile, NoResults, NoResultsBoundary, SaveFiltersMobile,} from './components';
 
 
 import './Theme.css';
 import './App.css';
-import './components/Pagination.css';
 import './App.mobile.css';
-import {formatNumber} from './utils/index';
-import {ScrollTo} from './components/ScrollTo';
-import {Hit as AlgoliaHit} from 'instantsearch.js';
+import InfiniteGrid from "./components/UI/InfiniteGrid";
+import {initialUIState} from "./settings/initialUIStatae";
+import {SearchConfig} from "./settings/SearchConfig";
+import SubmitIcon from "./components/UI/SubmitIcon";
+import InfiniteHits from "./components/UI/InfiniteHits";
+import SortByComponent from "./components/UI/SortByComponent";
+import FiltersSideWidget from "./components/UI/FiltersSideWidget";
+import {ScrollTo} from "./components/ScrollTo";
+import {routing} from "./utils";
+// import './components/Pagination.css';
+
 
 const searchClient = algoliasearch(
-    'DKCB12KYO6',
-    'e8192fc74751b19908e3a5cc87b38028');
+    'WR1LHA5AEI',
+    'aed708cd4183d38b9453be50384dc90b');
 
 
 function App() {
+
     const containerRef = useRef<HTMLElement>(null);
     const headerRef = useRef(null);
+    const [gridMode, setGridMode] = useState('list');
+    const [selectedBoatSpecs, setSelectedBoatSpecs] = useState<any>();
 
-    function openFilters() {
+
+    const openFilters = useCallback(() => {
         document.body.classList.add('filtering');
         window.scrollTo(0, 0);
         window.addEventListener('keyup', onKeyUp);
         window.addEventListener('click', onClick);
-    }
+    }, [])
 
-    function closeFilters() {
+    const closeFilters = useCallback(() => {
         document.body.classList.remove('filtering');
         containerRef.current!.scrollIntoView();
         window.removeEventListener('keyup', onKeyUp);
         window.removeEventListener('click', onClick);
-    }
+    }, [])
 
-    function onKeyUp(event: { key: string }) {
+    const onKeyUp = useCallback((event: { key: string }) => {
         if (event.key !== 'Escape') {
             return;
         }
 
         closeFilters();
-    }
+    }, [])
 
-    function onClick(event: MouseEvent) {
+    const onClick = useCallback((event: MouseEvent) => {
         if (event.target !== headerRef.current) {
             return;
         }
 
         closeFilters();
+    }, [])
+
+
+    useEffect(() => {
+        if ((window as any).UIkit) {
+            (window as any).UIkit.util.on('#modal-specs', 'hide', function () {
+                setSelectedBoatSpecs(undefined)
+            });
+        }
+    }, []);
+
+    if (!(window as any).MM_DEALER_ID) {
+        return <>DEALER ID IS MISSING</>
     }
+
 
     return (
         <InstantSearch
             searchClient={searchClient}
-            indexName={'dev_boats'}
-            insights={true}
-        >
-            <Configure filters={"location.dealer.id=2"}/>
-            <header className="header" ref={headerRef}>
-                <p className="header-logo">
-                    <AlgoliaSvg/>
-                </p>
-
-                <p className="header-title">Find your dream boat</p>
-
-                <SearchBox
-                    placeholder="Search boat"
-                    submitIconComponent={SubmitIcon}
-                />
-            </header>
-
-            <Configure
-                attributesToSnippet={['description:10']}
-                snippetEllipsisText="…"
-                removeWordsIfNoResults="allOptional"
-            />
-
+            indexName={'prod_boats'}
+            initialUiState={initialUIState}
+            insights={{
+                insightsInitParams: {
+                    anonymousUserToken: true,
+                    useCookie: true
+                }
+            }}
+            routing={routing}
+            future={{
+                preserveSharedStateOnUnmount: true
+            }}>
+            <Configure {...SearchConfig}/>
             <ScrollTo>
-                <main className="container" ref={containerRef}>
-                    <div className="container-wrapper">
-                        <section className="container-filters" onKeyUp={onKeyUp}>
-                            <div className="container-header">
-                                <h2>Filters</h2>
+                <section className={"uk-section uk-section-primary uk-preserve-color"}>
+                    <main className="uk-container" ref={containerRef} style={{
+                        maxWidth: '1400px',
+                    }}>
 
-                                <div className="clear-filters" data-layout="desktop">
-                                    <ClearFilters/>
-                                </div>
-
-                                <div className="clear-filters" data-layout="mobile">
-                                    <ResultsNumberMobile/>
-                                </div>
+                        <div className="uk-grid uk-child-width-expand@m uk-grid-small" data-uk-grid>
+                            <div className="uk-width-auto container-filters">
+                                <FiltersSideWidget/>
+                                <footer className="container-filters-footer" data-layout="mobile">
+                                    <div className="container-filters-footer-button-wrapper">
+                                        <ClearFiltersMobile containerRef={containerRef}/>
+                                    </div>
+                                    <div className="container-filters-footer-button-wrapper">
+                                        <SaveFiltersMobile onClick={closeFilters}/>
+                                    </div>
+                                </footer>
                             </div>
 
-                            <div className="container-body">
-                                <Panel header="Location">
-                                    <RefinementList attribute="location.city" transformItems={items => {
-                                        // Sort all items alphabetically
-                                        return items.sort((a, b) => {
-                                            const labelA = a.label.toUpperCase();
-                                            const labelB = b.label.toUpperCase();
-                                            if (labelA < labelB) {
-                                                return -1;
-                                            }
-                                            if (labelA > labelB) {
-                                                return 1;
-                                            }
-                                            return 0;
-                                        });
-                                    }}/>
-                                </Panel>
-                                <Panel header="Usage">
-                                    <RefinementList attribute="usage"/>
-                                </Panel>
+                            <div>
+                                <div className="uk-panel" style={{
+                                    background: '#fff',
+                                    // clipPath: 'polygon(20px 0,100% 0,100% 100%,0 100%,0 20px)',
+                                    padding: '20px'
+                                }}>
+                                    <div className={"uk-panel uk-padding-small uk-padding-remove-horizontal"}>
+                                        <div className="uk-margin-bottom uk-grid uk-child-width-expand uk-flex-middle"
+                                             data-uk-grid>
+                                            <div>
+                                                <SearchBox
+                                                    placeholder="Search boat"
+                                                    submitIconComponent={SubmitIcon}
+                                                />
+                                            </div>
+                                            <div className={"uk-width-auto"} data-layout={"desktop"}>
+                                                <ul className="uk-iconnav">
+                                                    <li>
+                                                        <button onClick={() => setGridMode('grid')}
+                                                                className={gridMode === 'grid' ? "uk-active" : ''}
+                                                                data-uk-icon="icon: grid"></button>
+                                                    </li>
+                                                    <li>
+                                                        <button onClick={() => setGridMode('list')}
+                                                                className={gridMode === 'list' ? "uk-active" : ''}
+                                                                data-uk-icon="icon: menu"></button>
+                                                    </li>
 
-                                <Panel header="Manufacturer">
-                                    <HierarchicalMenu
-                                        showMore={true}
-
-                                        showMoreLimit={100}
-                                        limit={10}
-
-                                        transformItems={items => {
-                                            return items.map((item) => ({
-                                                ...item,
-                                                label: item.label,
-                                            }));
-                                        }}
-                                        attributes={[
-                                            'lvl0',
-                                            'lvl1',
-                                        ]}
-                                    />
-                                </Panel>
-
-
-                                <Panel header="Price">
-                                    <PriceSlider attribute="price"/>
-                                </Panel>
-                                <Panel header="Price">
-                                    <RangeInput
-                                        attribute={'year'}
-                                    />
-                                </Panel>
-
-                                <Panel header="Status">
-                                    <RefinementList
-                                        attribute="status"
-                                        transformItems={items => {
-                                            // Sort all items alphabetically
-                                            return items.sort((a, b) => {
-                                                const labelA = a.label.toUpperCase();
-                                                const labelB = b.label.toUpperCase();
-                                                if (labelA < labelB) {
-                                                    return -1;
+                                                </ul>
+                                            </div>
+                                            <div className={"uk-width-auto"}>
+                                                <SortByComponent/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id={"infinite_list"}>
+                                        <Stats
+                                            translate={"yes"}
+                                            translations={{
+                                                rootElementText({
+                                                                    nbHits,
+                                                                    processingTimeMS,
+                                                                    nbSortedHits,
+                                                                    areHitsSorted
+                                                                }) {
+                                                    return `Showing ${nbHits} Results`
                                                 }
-                                                if (labelA > labelB) {
-                                                    return 1;
-                                                }
-                                                return 0;
-                                            });
-                                        }}
-                                    />
-                                </Panel>
+                                            }}
+                                            style={{
+                                                fontSize: 16
+                                            }}/>
+                                        <hr style={{
+                                            margin: '0 0 8px 0'
+                                        }}/>
 
-                                {/*<Panel header="Free shipping">*/}
-                                {/*    <ToggleRefinement*/}
-                                {/*        attribute="free_shipping"*/}
-                                {/*        label="Display only items with free shipping"*/}
-                                {/*        on={true}*/}
-                                {/*    />*/}
-                                {/*</Panel>*/}
+                                        <NoResultsBoundary fallback={<NoResults/>}>
+                                            {gridMode === 'list' ? <InfiniteHits onSelectBoatSpecs={(specs: any) => {
+                                                    (window as any).UIkit.modal(document.querySelector('#modal-specs')).show()
+                                                    setSelectedBoatSpecs(specs)
+                                                }}/> :
+                                                <InfiniteGrid/>}
+                                        </NoResultsBoundary>
+                                    </div>
+                                    <div className={`uk-flex-top`}
+                                         id={"specs-modal"} data-uk-modal>
+                                        {selectedBoatSpecs &&
+                                            <div className="uk-modal-dialog  uk-margin-auto-vertical" style={{
+                                                width: 700
+                                            }}>
+                                                <button className="uk-modal-close-default" type="button"
+                                                        data-uk-close></button>
 
-                                {/*<Panel header="Ratings">*/}
-                                {/*    <Ratings attribute="rating" />*/}
-                                {/*</Panel>*/}
+                                                <div className="uk-modal-header">
+                                                    <div className="uk-grid uk-child-width-auto uk-grid-small"
+                                                         data-uk-grid>
+                                                        <div>
+                                                            <img
+                                                                src={(selectedBoatSpecs.images[0] as string).includes('cdn.nativerank.com') ? `${selectedBoatSpecs.images[0]}/tr:w-100` : selectedBoatSpecs.images[0]}
+                                                                width={100}/>
+
+                                                        </div>
+                                                        <div className={"uk-width-expand"}>
+                                                            <h3 className={"el-title"}>Vehicle Overview | <span
+                                                                className={"boat-title uk-text-bold"}>
+                                            {selectedBoatSpecs.name}
+                                        </span></h3>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div className="uk-modal-body" data-uk-overflow-auto>
+                                                    <h4 className={"uk-heading-divider uk-text-bold"}>Specifications</h4>
+                                                    <div className={"uk-grid uk-child-width-1-2@s uk-grid-row-small"}
+                                                         data-uk-grid>
+                                                        {selectedBoatSpecs?.attributes && selectedBoatSpecs.attributes.map((attr: any) =>
+                                                            <div key={attr.name}>
+                                                                <div className="uk-panel">
+                                                                    <div
+                                                                        className="spec uk-grid uk-child-width-expand uk-space-between"
+                                                                        data-uk-grid>
+                                                                <span
+                                                                    className={"label uk-width-auto"}>{attr.name}:</span>
+                                                                        <span
+                                                                            className={"value uk-text-bold uk-text-right"}>{attr.value}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>)}
+                                                    </div>
+                                                    {selectedBoatSpecs.description && <>
+                                                        <h4 className={"uk-heading-divider uk-text-bold"}>Description</h4>
+                                                        <div dangerouslySetInnerHTML={{
+                                                            __html: selectedBoatSpecs.description
+                                                        }}/>
+                                                    </>}
+
+                                                </div>
+
+                                                <div className="uk-modal-footer uk-text-right">
+
+                                                    <a href={selectedBoatSpecs.link}
+                                                       className="uk-button uk-button-primary">View Full Listing</a>
+                                                </div>
+
+
+                                            </div>}
+                                    </div>
+                                </div>
                             </div>
-                        </section>
-
-                        <footer className="container-filters-footer" data-layout="mobile">
-                            <div className="container-filters-footer-button-wrapper">
-                                <ClearFiltersMobile containerRef={containerRef}/>
-                            </div>
-
-                            <div className="container-filters-footer-button-wrapper">
-                                <SaveFiltersMobile onClick={closeFilters}/>
-                            </div>
-                        </footer>
-                    </div>
-
-                    <section className="container-results">
-                        <header className="container-header container-options">
-                            <SortBy
-                                className="container-option"
-                                items={[
-                                    {
-                                        label: 'Sort by Price',
-                                        value: 'price',
-                                    },
-                                ]}
-                            />
-
-                            {/*<HitsPerPage*/}
-                            {/*    className="container-option"*/}
-                            {/*    items={[*/}
-                            {/*        {*/}
-                            {/*            label: '16 hits per page',*/}
-                            {/*            value: 16,*/}
-                            {/*            default: true,*/}
-                            {/*        },*/}
-                            {/*        {*/}
-                            {/*            label: '32 hits per page',*/}
-                            {/*            value: 32,*/}
-                            {/*        },*/}
-                            {/*        {*/}
-                            {/*            label: '64 hits per page',*/}
-                            {/*            value: 64,*/}
-                            {/*        },*/}
-                            {/*    ]}*/}
-                            {/*/>*/}
-                        </header>
-
-                        <NoResultsBoundary fallback={<NoResults/>}>
-                            <InfiniteHits hitComponent={Hit}/>
-                        </NoResultsBoundary>
-
-                        {/*<footer className="container-footer" style={{height: 400}}>*/}
-                        {/*    <Pagination padding={2} showFirst={false} showLast={false}/>*/}
-                        {/*</footer>*/}
-                    </section>
-                </main>
+                        </div>
+                    </main>
+                </section>
             </ScrollTo>
-
             <aside data-layout="mobile">
                 <button
                     className="filters-button"
@@ -278,131 +268,6 @@ function App() {
 
         </InstantSearch>
     );
-}
-
-
-function SubmitIcon() {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 18 18"
-            aria-hidden="true"
-        >
-            <g
-                fill="none"
-                fillRule="evenodd"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.67"
-                transform="translate(1 1)"
-            >
-                <circle cx="7.11" cy="7.11" r="7.11"/>
-                <path d="M16 16l-3.87-3.87"/>
-            </g>
-        </svg>
-    );
-}
-
-type HitType = AlgoliaHit<any | {
-    image: string;
-    name: string;
-    categories: string[];
-    description: string;
-    price: number;
-    rating: string;
-}>;
-
-function Hit({hit}: { hit: HitType }) {
-    return (
-        <article className="hit">
-            <header className="hit-image-container">
-                {hit.images && <img src={hit.images[0]} alt={hit.name} className="hit-image"/>}
-            </header>
-
-            <div className="hit-info-container">
-                <p className="hit-category">{hit.stock_number}</p>
-                <h1>
-                    <Highlight attribute="name" highlightedTagName="mark" hit={hit}/>
-                </h1>
-                <p className="hit-description">
-                    <Snippet
-                        attribute="description"
-                        highlightedTagName="mark"
-                        hit={hit}
-                    />
-                </p>
-
-                <footer>
-                    <p>
-                        <span className="hit-em">$</span>{' '}
-                        <strong>{formatNumber(hit.price)}</strong>{' '}
-                    </p>
-                </footer>
-            </div>
-        </article>
-    );
-}
-
-
-function InfiniteHits(props: any) {
-
-    const {hits, isLastPage, showMore} = useInfiniteHits(props);
-    const sentinelRef = useRef(null);
-
-
-    useEffect(() => {
-        if (sentinelRef.current !== null) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    console.log(' more')
-
-                    if (entry.isIntersecting && !isLastPage) {
-                        console.log('showing more')
-                        showMore();
-
-                    }
-                });
-            });
-
-            observer.observe(sentinelRef.current);
-
-            return () => {
-                observer.disconnect();
-            };
-        }
-    }, [isLastPage, showMore]);
-
-    return (
-        <div>
-            <div className="ais-InfiniteHits">
-                <ul className="ais-InfiniteHits-list">
-                    {hits.map((hit: any) => (
-                        <li ref={sentinelRef} key={hit.objectID} className="ais-InfiniteHits-item">
-                            <Hit hit={hit}/>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            {!isLastPage && <div style={{textAlign: 'center', paddingTop: 30}}>
-                <a style={{
-                    background: '#1d45f9',
-                    color: '#fff',
-                    padding: '0 20px',
-                    lineHeight: '36px',
-                    display: 'inline-block',
-                    cursor: 'pointer'
-                }}
-                   onClick={() => showMore()}
-                >
-                    Show More
-                </a>
-            </div>}
-        </div>
-    );
-
 }
 
 
