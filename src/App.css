@@ -543,3 +543,44 @@ mark {
 .spec-btn {
     width: 100%;
 }
+
+.specifications-container-hidden {
+    max-height: 0;
+    transition: max-height 0.5s ease; /* Adjust the duration and timing function as needed */
+    border: thin solid #bababa;
+    border-top: none;
+    overflow: hidden; /* Ensure the content doesn't overflow */
+}
+
+.specifications-container {
+    max-height: 500px;
+    overflow: hidden; /* Ensure the content doesn't overflow */
+    transition: max-height 1s ease; /* Adjust the duration and timing function as needed */
+    border: thin solid #bababa;
+    border-top: none;
+}
+
+.arrow-button {
+    z-index: 999;
+    position: absolute;
+    bottom: -16px; /* Adjust the position of the button as needed */
+    left: 50%;
+    background-color: #ebebeb;
+    color: #666;
+}
+
+.arrow-button-upper-relative {
+    position: relative;
+}
+
+@media screen and (min-width: 890px) {
+    #infinite_list div.uk-card-default {
+        box-shadow: none;
+    }
+
+    #infinite_list div.uk-card-default:hover {
+        box-shadow: none;
+        transition: .2s;
+        background: #111;
+    }
+}
