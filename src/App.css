@@ -561,12 +561,16 @@ mark {
 }
 
 .arrow-button {
-    z-index: 999;
+    text-align: center;
+    z-index: 999 !important;
+    border-radius: 2px;
+    width: 60px;
+    height: 22px;
     position: absolute;
-    bottom: -16px; /* Adjust the position of the button as needed */
+    bottom: -10px; /* Adjust the position of the button as needed */
     left: 50%;
-    background-color: #ebebeb;
-    color: #666;
+    background-color: #b3b3b3;
+    color: #fff;
 }
 
 .arrow-button-upper-relative {

@@ -255,8 +255,10 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
                 </div>
             </div>
 
-            <a onClick={() => setViewDetailsTab(!viewDetailsTab)} className="uk-icon-button arrow-button"
-               uk-icon={viewDetailsTab ? "arrow-up" : "arrow-down"}></a>
+            <div className="arrow-button" onClick={() => setViewDetailsTab(!viewDetailsTab)}>
+
+                <a uk-icon={viewDetailsTab ? "triangle-up" : "triangle-down"}></a>
+            </div>
 
         </div>
 
