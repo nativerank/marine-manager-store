@@ -13,11 +13,28 @@ type HitType = any | {
 };
 export const BOAT_PLACEHOLDER_IMAGE = 'https://cdn.nativerank.com/image_coming_soon_HSUNu2mUx.jpg?tr=w-325'
 
+function convertHtmlToString(htmlString: any) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, 'text/html');
+    const textContent = doc.body.textContent || "";
+    return shortenString(textContent, 250);
+}
+
+function shortenString(inputString: any, maxLength: any) {
+    if (inputString.length <= maxLength) {
+        return inputString;
+    } else {
+        return inputString.slice(0, maxLength - 3) + '...';
+    }
+}
+
+
 const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
     hit: HitType, onSelectBoatSpecs: (specs: any) => void,
     sendEvent: SendEventForHits
 }) => {
 
+    const descString = convertHtmlToString(hit.description);
     const [viewingAttributes, setViewingAttributes] = useState(false)
     const [viewDetailsTab, setViewDetailsTab] = useState(false);
     const link = useMemo(() => {
@@ -156,11 +173,10 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
                             {hit.stock_number && <p className="hit-category">Stock #: <b>{hit.stock_number}</b></p>}
 
                             <div className={'hit-content'}>
-
                                 <div className={"el-price-header"}>
                                     {!hit.price || hit.price === 0 || hit.status.toLowerCase() === 'call for price'
                                         ?
-                                        <div>
+                                        <div className="uk-button grey-bg border-radius-small">
                                             Call For Price
                                         </div>
                                         :
@@ -168,6 +184,28 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
                                             <span className="hit-em">$</span>{' '}
                                             <strong>{formatNumber(hit.price)}</strong>{' '}
                                         </>}
+                                    {
+                                        descString.length ?
+                                            <>
+                                                <hr/>
+                                                <a style={{textDecoration: "none"}} href={link}>
+                                                    <p className="hit-description-p">{descString}<strong> Read
+                                                        More</strong>
+                                                    </p>
+                                                </a>
+                                            </>
+                                            :
+                                            <>
+                                                <hr/>
+                                                <a style={{textDecoration: "none"}} href={link}>
+                                                    <p className={"hit-description-p"}>
+                                                        <Highlight attribute="name" highlightedTagName="mark"
+                                                                   hit={hit}/>... <strong> Read More </strong>
+                                                    </p>
+                                                </a>
+                                            </>
+                                    }
+
                                 </div>
                                 {/*<div className="hit-description">*/}
                                 {/*    {[...hit.attributes].splice(0, 2).map((attr: any) => (*/}
@@ -202,7 +240,7 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
                                         }
                                     }))
                                 }}
-                                        className={"uk-button uk-button-primary"}
+                                        className={"uk-button uk-button-primary border-radius-small"}
 
                                 >
                                     Check Availability
@@ -222,7 +260,7 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
                                     // }}
                                     // onClick={() => setViewDetailsTab(!viewDetailsTab)}
                                     // data-uk-toggle={'#specs-modal'}
-                                    className={"uk-button uk-button-link show-details uk-margin-left"}
+                                    className={"uk-button uk-button-link border-radius-small show-details uk-margin-left"}
                                 >
                                         <span
                                             data-uk-icon={"icon: eye"}/> {'View boat'}
