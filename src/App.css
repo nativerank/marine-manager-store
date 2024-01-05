@@ -1,5 +1,9 @@
 /* Search box */
 
+body {
+    font-family: 'Ubuntu', sans-serif !important;
+}
+
 .ais-SearchBox {
     width: 100%;
 }

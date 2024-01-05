@@ -189,8 +189,8 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
                                             <>
                                                 <hr/>
                                                 <a style={{textDecoration: "none"}} href={link}>
-                                                    <p className="hit-description-p">{descString}<strong> Read
-                                                        More</strong>
+                                                    <p className="hit-description-p">{descString}<strong> READ
+                                                        MORE</strong>
                                                     </p>
                                                 </a>
                                             </>
@@ -200,7 +200,7 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
                                                 <a style={{textDecoration: "none"}} href={link}>
                                                     <p className={"hit-description-p"}>
                                                         <Highlight attribute="name" highlightedTagName="mark"
-                                                                   hit={hit}/>... <strong> Read More </strong>
+                                                                   hit={hit}/>... <strong> READ MORE </strong>
                                                     </p>
                                                 </a>
                                             </>
