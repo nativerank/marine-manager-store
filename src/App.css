@@ -1,5 +1,9 @@
 /* Search box */
 
+body {
+    font-family: 'Ubuntu', sans-serif !important;
+}
+
 .ais-SearchBox {
     width: 100%;
 }
@@ -542,4 +546,63 @@ mark {
 
 .spec-btn {
     width: 100%;
+}
+
+.specifications-container-hidden {
+    max-height: 0;
+    transition: max-height 0.5s ease; /* Adjust the duration and timing function as needed */
+    border: thin solid #bababa;
+    border-top: none;
+    overflow: hidden; /* Ensure the content doesn't overflow */
+}
+
+.specifications-container {
+    max-height: 500px;
+    overflow: hidden; /* Ensure the content doesn't overflow */
+    transition: max-height 1s ease; /* Adjust the duration and timing function as needed */
+    border: thin solid #bababa;
+    border-top: none;
+}
+
+.arrow-button {
+    text-align: center;
+    z-index: 999 !important;
+    border-radius: 2px;
+    width: 60px;
+    height: 22px;
+    position: absolute;
+    bottom: -10px; /* Adjust the position of the button as needed */
+    left: 50%;
+    background-color: #b3b3b3;
+    color: #fff;
+}
+
+.arrow-button-upper-relative {
+    position: relative;
+}
+
+.hit-description-p {
+    font-size: 14px;
+    color: #666;
+}
+
+@media screen and (min-width: 890px) {
+    #infinite_list div.uk-card-default {
+        box-shadow: none;
+    }
+
+    #infinite_list div.uk-card-default:hover {
+        box-shadow: none;
+        transition: .2s;
+        background: #111;
+    }
+}
+
+.border-radius-small {
+    border-radius: 8px;
+}
+
+.grey-bg {
+    color: #2d2d2d;
+    background-color: #b3b3b3;
 }

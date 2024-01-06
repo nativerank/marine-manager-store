@@ -13,28 +13,45 @@ type HitType = any | {
 };
 export const BOAT_PLACEHOLDER_IMAGE = 'https://cdn.nativerank.com/image_coming_soon_HSUNu2mUx.jpg?tr=w-325'
 
+function convertHtmlToString(htmlString: any) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, 'text/html');
+    const textContent = doc.body.textContent || "";
+    return shortenString(textContent, 250);
+}
+
+function shortenString(inputString: any, maxLength: any) {
+    if (inputString.length <= maxLength) {
+        return inputString;
+    } else {
+        return inputString.slice(0, maxLength - 3) + '...';
+    }
+}
+
+
 const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
     hit: HitType, onSelectBoatSpecs: (specs: any) => void,
     sendEvent: SendEventForHits
 }) => {
 
+    const descString = convertHtmlToString(hit.description);
     const [viewingAttributes, setViewingAttributes] = useState(false)
-
+    const [viewDetailsTab, setViewDetailsTab] = useState(false);
     const link = useMemo(() => {
         return `${(window as any).MM_DOMAIN}/${hit.usage.toLowerCase()}${(window as any).MM_USAGE_SLUG}/${hit.manufacturer.slug}/${hit.slug}`
     }, [hit])
 
     return (
         <div className={"uk-position-relative"}>
-            <div className="hit  uk-card uk-card-default el-card">
-                <a href={link} onClick={() => sendEvent('click', hit, 'Boat Clicked')}
-                   className={"uk-position-absolute"} data-layout={"desktop"} style={{
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    zIndex: 99
-                }}></a>
+            <div className="hit arrow-button-upper-relative-cint  uk-card uk-card-default el-card">
+                {/*<a href={link} onClick={() => sendEvent('click', hit, 'Boat Clicked')}*/}
+                {/*   className={"uk-position-absolute"} data-layout={"desktop"} style={{*/}
+                {/*    top: 0,*/}
+                {/*    left: 0,*/}
+                {/*    right: 0,*/}
+                {/*    bottom: 0,*/}
+                {/*    zIndex: 99*/}
+                {/*}}></a>*/}
                 <div className="uk-grid uk-child-width-expand@m uk-grid-collapse" data-uk-grid>
                     <div className={"uk-width-1-3@m"}>
                         <header className="uk-width-1-1">
@@ -156,11 +173,10 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
                             {hit.stock_number && <p className="hit-category">Stock #: <b>{hit.stock_number}</b></p>}
 
                             <div className={'hit-content'}>
-
                                 <div className={"el-price-header"}>
                                     {!hit.price || hit.price === 0 || hit.status.toLowerCase() === 'call for price'
                                         ?
-                                        <div>
+                                        <div className="uk-button grey-bg border-radius-small">
                                             Call For Price
                                         </div>
                                         :
@@ -168,6 +184,28 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
                                             <span className="hit-em">$</span>{' '}
                                             <strong>{formatNumber(hit.price)}</strong>{' '}
                                         </>}
+                                    {
+                                        descString.length ?
+                                            <>
+                                                <hr/>
+                                                <a style={{textDecoration: "none"}} href={link}>
+                                                    <p className="hit-description-p">{descString}<strong> READ
+                                                        MORE</strong>
+                                                    </p>
+                                                </a>
+                                            </>
+                                            :
+                                            <>
+                                                <hr/>
+                                                <a style={{textDecoration: "none"}} href={link}>
+                                                    <p className={"hit-description-p"}>
+                                                        <Highlight attribute="name" highlightedTagName="mark"
+                                                                   hit={hit}/>... <strong> READ MORE </strong>
+                                                    </p>
+                                                </a>
+                                            </>
+                                    }
+
                                 </div>
                                 {/*<div className="hit-description">*/}
                                 {/*    {[...hit.attributes].splice(0, 2).map((attr: any) => (*/}
@@ -202,30 +240,64 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
                                         }
                                     }))
                                 }}
-                                        className={"uk-button uk-button-primary"}
+                                        className={"uk-button uk-button-primary border-radius-small"}
 
                                 >
                                     Check Availability
                                 </button>
 
-                                {hit.attributes && hit.attributes.length > 0 && <button onClick={() => {
-                                    if ((window as any).UIkit) {
-                                        if (!hit.attributes || hit.attributes.length < 1) {
-                                            return
-                                        }
-                                        onSelectBoatSpecs({...hit, link} as any);
-                                    }
-                                }}
-                                                                                        data-uk-toggle={'#specs-modal'}
-                                                                                        className={"uk-button uk-button-link show-details uk-margin-left"}
+
+                                <a
+                                    href={link} onClick={() => sendEvent('click', hit, 'Boat Clicked')}
+                                    //      onClick={
+                                    //         () => {
+                                    //         if ((window as any).UIkit) {
+                                    //             if (!hit.attributes || hit.attributes.length < 1) {
+                                    //             return
+                                    //         }
+                                    //         onSelectBoatSpecs({...hit, link} as any);
+                                    //         }
+                                    // }}
+                                    // onClick={() => setViewDetailsTab(!viewDetailsTab)}
+                                    // data-uk-toggle={'#specs-modal'}
+                                    className={"uk-button uk-button-link border-radius-small show-details uk-margin-left"}
                                 >
-                                    <span data-uk-icon={"icon: eye"}/> Quick View
-                                </button>}
+                                        <span
+                                            data-uk-icon={"icon: eye"}/> {'View boat'}
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div>
+                <div className={viewDetailsTab ? "specifications-container" : "specifications-container-hidden"}>
+                    <div className="uk-modal-body" data-uk-overflow-auto>
+                        <div className={"uk-grid uk-child-width-1-2@s uk-grid-row-small"}
+                             data-uk-grid>
+                            {hit?.attributes && hit.attributes.map((attr: any) =>
+                                <div key={attr.name}>
+                                    <div className="uk-panel">
+                                        <div
+                                            className="spec uk-grid uk-child-width-expand uk-space-between"
+                                            data-uk-grid>
+                                        <span
+                                            className={"label uk-width-auto"}>{attr.name}</span>
+                                            <span
+                                                className={"value uk-text-bold uk-text-right"}>{attr.value}</span>
+                                        </div>
+                                    </div>
+                                </div>)}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="arrow-button" onClick={() => setViewDetailsTab(!viewDetailsTab)}>
+
+                <button uk-icon={viewDetailsTab ? "triangle-up" : "triangle-down"}></button>
+            </div>
+
         </div>
 
     );

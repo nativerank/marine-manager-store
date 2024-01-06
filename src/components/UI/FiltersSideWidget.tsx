@@ -58,7 +58,6 @@ const FiltersSideWidget = () => {
                     <Panel header="Year">
                         <RangeInput
                             attribute={'year'}
-                            placeholder={"Year"}
 
                         />
                     </Panel>
