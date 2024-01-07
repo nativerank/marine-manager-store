@@ -295,7 +295,8 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
 
             <div className="arrow-button" onClick={() => setViewDetailsTab(!viewDetailsTab)}>
 
-                <button uk-icon={viewDetailsTab ? "triangle-up" : "triangle-down"}></button>
+                <button style={{marginTop: "3%"}}
+                        uk-icon={viewDetailsTab ? "triangle-up" : "triangle-down"}>{viewDetailsTab ? "VIEW LESS" : "VIEW MORE"}</button>
             </div>
 
         </div>
