@@ -7,16 +7,9 @@ import React, {memo} from "react";
 
 const FiltersSideWidget = () => {
     return (
-        <div className="uk-panel filters-wrapper" style={{
-            width: '290px',
-            clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-            border: '1px solid #e5e5e5'
-        }}>
+        <div>
             <section>
-                <div className="container-header" style={{
-                    padding: 10,
-                    background: '#fff'
-                }}>
+                <div className="container-header">
                     <h2 className={"uk-h4 uk-margin-remove"}>Filters</h2>
                     <div className="clear-filters" data-layout="desktop">
                         <ClearFilters/>
