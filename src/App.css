@@ -554,6 +554,7 @@ mark {
     border: thin solid #bababa;
     border-top: none;
     overflow: hidden; /* Ensure the content doesn't overflow */
+    background-color: #d9d9d9;
 }
 
 .specifications-container {
@@ -562,6 +563,7 @@ mark {
     transition: max-height 1s ease; /* Adjust the duration and timing function as needed */
     border: thin solid #bababa;
     border-top: none;
+    background-color: #d9d9d9;
 }
 
 .arrow-button {
