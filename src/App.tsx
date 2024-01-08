@@ -1,22 +1,23 @@
 import algoliasearch from 'algoliasearch/lite';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Configure, InstantSearch, SearchBox, Stats,} from 'react-instantsearch';
+import {Configure, InstantSearch, Stats,} from 'react-instantsearch';
 
 import {ClearFiltersMobile, NoResults, NoResultsBoundary, SaveFiltersMobile,} from './components';
 
 
-import './Theme.css';
-import './App.css';
-import './App.mobile.css';
+// import './Theme.css';
+import './index.css'
+// import './App.css';
+// import './App.mobile.css';
 import InfiniteGrid from "./components/UI/InfiniteGrid";
 import {initialUIState} from "./settings/initialUIStatae";
 import {SearchConfig} from "./settings/SearchConfig";
-import SubmitIcon from "./components/UI/SubmitIcon";
 import InfiniteHits from "./components/UI/InfiniteHits";
 import SortByComponent from "./components/UI/SortByComponent";
-import FiltersSideWidget from "./components/UI/FiltersSideWidget";
 import {ScrollTo} from "./components/ScrollTo";
 import {routing} from "./utils";
+import FiltersSideWidget from "./components/UI/FiltersSideWidget";
+import CustomSearchBox from "./components/CustomSearchBox";
 // import './components/Pagination.css';
 
 
@@ -94,13 +95,10 @@ function App() {
             }}>
             <Configure {...SearchConfig}/>
             <ScrollTo>
-                <section className={"uk-section uk-section-primary uk-preserve-color"}>
-                    <main className="uk-container" ref={containerRef} style={{
-                        maxWidth: '1400px',
-                    }}>
-
-                        <div className="uk-grid uk-child-width-expand@m uk-grid-small" data-uk-grid>
-                            <div className="uk-width-auto container-filters">
+                <section className={"bg-white"}>
+                    <main ref={containerRef} className={"py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6"}>
+                        <div className={"grid grid-flow-row-dense grid-cols-4"}>
+                            <div>
                                 <FiltersSideWidget/>
                                 <footer className="container-filters-footer" data-layout="mobile">
                                     <div className="container-filters-footer-button-wrapper">
@@ -111,23 +109,12 @@ function App() {
                                     </div>
                                 </footer>
                             </div>
-
-                            <div>
-                                <div className="uk-panel" style={{
-                                    background: '#fff',
-                                    // clipPath: 'polygon(20px 0,100% 0,100% 100%,0 100%,0 20px)',
-                                    padding: '20px'
-                                }}>
-                                    <div className={"uk-panel uk-padding-small uk-padding-remove-horizontal"}>
-                                        <div className="uk-margin-bottom uk-grid uk-child-width-expand uk-flex-middle"
-                                             data-uk-grid>
-                                            <div>
-                                                <SearchBox
-                                                    placeholder="Search boat"
-                                                    submitIconComponent={SubmitIcon}
-                                                />
-                                            </div>
-                                            <div className={"uk-width-auto"} data-layout={"desktop"}>
+                            <div className={"col-span-3"}>
+                                <div>
+                                    <div>
+                                        <div className={"flex justify-between mx-auto gap-x-2"}>
+                                            <CustomSearchBox/>
+                                            <div data-layout={"desktop"}>
                                                 <ul className="uk-iconnav">
                                                     <li>
                                                         <button onClick={() => setGridMode('grid')}
@@ -142,7 +129,7 @@ function App() {
 
                                                 </ul>
                                             </div>
-                                            <div className={"uk-width-auto"}>
+                                            <div className={"w-52"}>
                                                 <SortByComponent/>
                                             </div>
                                         </div>
@@ -155,17 +142,14 @@ function App() {
                                                                     nbHits,
                                                                     processingTimeMS,
                                                                     nbSortedHits,
-                                                                    areHitsSorted
+                                                                    areHitsSorted,
                                                                 }) {
                                                     return `Showing ${nbHits} Results`
                                                 }
                                             }}
-                                            style={{
-                                                fontSize: 16
-                                            }}/>
-                                        <hr style={{
-                                            margin: '0 0 8px 0'
-                                        }}/>
+
+                                            className={"text-sm text-gray-500 pt-2"}
+                                        />
 
                                         <NoResultsBoundary fallback={<NoResults/>}>
                                             {gridMode === 'list' ? <InfiniteHits onSelectBoatSpecs={(specs: any) => {
@@ -174,70 +158,6 @@ function App() {
                                                 }}/> :
                                                 <InfiniteGrid/>}
                                         </NoResultsBoundary>
-                                    </div>
-                                    <div className={`uk-flex-top`}
-                                         id={"specs-modal"} data-uk-modal>
-                                        {selectedBoatSpecs &&
-                                            <div className="uk-modal-dialog  uk-margin-auto-vertical" style={{
-                                                width: 700
-                                            }}>
-                                                <button className="uk-modal-close-default" type="button"
-                                                        data-uk-close></button>
-
-                                                <div className="uk-modal-header">
-                                                    <div className="uk-grid uk-child-width-auto uk-grid-small"
-                                                         data-uk-grid>
-                                                        <div>
-                                                            <img
-                                                                src={(selectedBoatSpecs.images[0] as string).includes('cdn.nativerank.com') ? `${selectedBoatSpecs.images[0]}/tr:w-100` : selectedBoatSpecs.images[0]}
-                                                                width={100}/>
-
-                                                        </div>
-                                                        <div className={"uk-width-expand"}>
-                                                            <h3 className={"el-title"}>Vehicle Overview | <span
-                                                                className={"boat-title uk-text-bold"}>
-                                            {selectedBoatSpecs.name}
-                                        </span></h3>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                                <div className="uk-modal-body" data-uk-overflow-auto>
-                                                    <h4 className={"uk-heading-divider uk-text-bold"}>Specifications</h4>
-                                                    <div className={"uk-grid uk-child-width-1-2@s uk-grid-row-small"}
-                                                         data-uk-grid>
-                                                        {selectedBoatSpecs?.attributes && selectedBoatSpecs.attributes.map((attr: any) =>
-                                                            <div key={attr.name}>
-                                                                <div className="uk-panel">
-                                                                    <div
-                                                                        className="spec uk-grid uk-child-width-expand uk-space-between"
-                                                                        data-uk-grid>
-                                                                <span
-                                                                    className={"label uk-width-auto"}>{attr.name}:</span>
-                                                                        <span
-                                                                            className={"value uk-text-bold uk-text-right"}>{attr.value}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>)}
-                                                    </div>
-                                                    {selectedBoatSpecs.description && <>
-                                                        <h4 className={"uk-heading-divider uk-text-bold"}>Description</h4>
-                                                        <div dangerouslySetInnerHTML={{
-                                                            __html: selectedBoatSpecs.description
-                                                        }}/>
-                                                    </>}
-
-                                                </div>
-
-                                                <div className="uk-modal-footer uk-text-right">
-
-                                                    <a href={selectedBoatSpecs.link}
-                                                       className="uk-button uk-button-primary">View Full Listing</a>
-                                                </div>
-
-
-                                            </div>}
                                     </div>
                                 </div>
                             </div>
