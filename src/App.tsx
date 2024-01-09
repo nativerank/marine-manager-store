@@ -98,7 +98,7 @@ function App() {
                 <section className={"bg-white"}>
                     <main ref={containerRef} className={"py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6"}>
                         <div className={"grid grid-flow-row-dense grid-cols-4"}>
-                            <div>
+                            <div className={"hidden md:block"}>
                                 <FiltersSideWidget/>
                                 <footer className="container-filters-footer" data-layout="mobile">
                                     <div className="container-filters-footer-button-wrapper">
@@ -109,7 +109,7 @@ function App() {
                                     </div>
                                 </footer>
                             </div>
-                            <div className={"col-span-3"}>
+                            <div className={"col-span-4 md:col-span-3"}>
                                 <div>
                                     <div>
                                         <div className={"flex justify-between mx-auto gap-x-2"}>
