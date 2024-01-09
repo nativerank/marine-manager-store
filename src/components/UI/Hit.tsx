@@ -40,8 +40,8 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
 
                 return getCDNImage({
                     url: image,
-                    transform: 'w-400,h-307'
-                })
+                    transform: 'w-800,h-614'
+                }).replace(' ', '%20')
 
             })
         }
@@ -70,29 +70,29 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
             className="hit relative mx-auto my-10 flex w-full gap-4 flex-wrap  justify-between rounded-xl border px-4 py-4
             bg-gradient-to-b from-white via-gray-50 via-75% to-gray-100">
 
-            <div className={"flex-none"}>
-                <div className={"w-72"}>
+            <div className={"basis-full lg:flex-none"}>
+                <div className={"w-full lg:w-72"}>
                     {atLeastOneImageExists ? <Slider images={thumbImages.slice(0, 5)}/> :
                         <img src={BOAT_PLACEHOLDER_IMAGE} loading={"lazy"} className={"h-44 w-72 object-cover"}
                              alt={""}/>}
                 </div>
             </div>
-            <div className={"flex-1"}>
+            <div className={"w-full basis-full lg:flex-1"}>
                 <div className="">
-                    <div className={"flex pb-1.5 items-center"}>
-                        <div className={"flex-1"}>
+                    <div className={"flex pb-1.5 divide-x lg:divide-x-0 gap-x-2 lg:gap-x-1 items-center"}>
+                        <div className={"flex-1 "}>
                             <div
                                 className={"bg-amber-600 text-amber-50 inline-block px-2 uppercase text-sm shadow-amber-500 shadow-sm rounded"}>
                                 {hit.usage}
                             </div>
                             <a href={link} className={"text-[#333] hover:text-amber-600"}
                                onClick={() => sendEvent('click', hit, 'Boat Clicked')}>
-                                <h3 className={"font-black text-2xl"}>
+                                <h2 className={"font-bold lg:font-black text-md lg:text-2xl"}>
                                     <Highlight attribute="name" highlightedTagName="mark" hit={hit}/>
-                                </h3>
+                                </h2>
                             </a>
                         </div>
-                        <div>
+                        <div className={"pl-4 lg:pl-0"}>
                             <Price price={hit.price} status={hit.status}/>
                         </div>
                     </div>
@@ -111,7 +111,7 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
                         <div className={"border-b relative"}>
                         </div>
                         <div className={"pt-4 flex gap-4 flex-wrap"}>
-                            <div className={"flex-1"}>
+                            <div className={"basis-full lg:flex-1"}>
                                 {
                                     descString.length ?
                                         <p className="text-sm">{descString}<strong> READ
@@ -125,9 +125,9 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
                                         </p>
                                 }
                             </div>
-                            <div className={"w-38"}>
+                            <div className={"w-full lg:w-48 pb-4 lg:pb-0"}>
                                 <button
-                                    className={"text-center flex items-center gap-2 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3.5 me-2 mb-2 focus:outline-none"}
+                                    className={"justify-center text-center flex items-center gap-2 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3.5 me-2 mb-2 focus:outline-none"}
                                     onClick={() => {
                                         window.dispatchEvent(new CustomEvent('check_availability', {
                                             detail: {
@@ -156,8 +156,8 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
 
 
                 <button
-                    className={"" +
-                        "w-36 py-2 flex justify-center items-center gap-1 absolute inset-x bottom-0 translate-y-1 translate-x-1/2 z-10 hover:before:bg-gray-200 before:absolute before:inset-y-0 before:w-[calc(100%-30px)] before:border before:border-gray-200 before:border-r-0 before:-left-[3px] before:-skew-x-[40deg] before:bg-white " +
+                    className={"left-1/2 " +
+                        "w-36 py-2 flex justify-center items-center gap-1 absolute bottom-0 translate-y-1 -translate-x-1/2 z-10 hover:before:bg-gray-200 before:absolute before:inset-y-0 before:w-[calc(100%-30px)] before:border before:border-gray-200 before:border-r-0 before:-left-[3px] before:-skew-x-[40deg] before:bg-white " +
                         "after:absolute after:inset-y-0 hover:after:bg-gray-200 after:bg-white after:w-[calc(100%-30px)] after:border after:border-gray-200 after:-right-[3px] after:border-l-0 after:skew-x-[40deg]"}
                     onClick={() => setViewDetailsTab(!viewDetailsTab)}>
                         <span

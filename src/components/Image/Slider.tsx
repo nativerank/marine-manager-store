@@ -24,16 +24,19 @@ const Slider: FC<{ images: string[] }> = ({images}) => {
 
     return (
         <div className="overflow-hidden relative">
-            <div className="flex transition ease duration-500"
+            <div className="flex transition ease duration-500 max-h-52 lg:max-h-none"
                  style={{
                      transform: `translateX(-${currentSlide * 100}%)`,
                  }}
             >
                 {images.map((image, idx) => {
-                    return idx === images.length - 1 ?
-                        <img className={"w-72 h-full max-h-56 object-cover"} key={'img-' + idx} src={image} alt={""}/> :
-                        <img loading={`${idx === 0 ? 'eager' : 'lazy'}`} className={"w-72 h-full max-h-56 object-cover"}
-                             key={'img-' + idx} src={image} alt={""}/>
+
+                    return <img loading={`${idx === 0 ? 'eager' : 'lazy'}`}
+                                className={"w-full md:w-72 h-auto md:h-full lg:max-h-56 object-cover"}
+                                key={'img-' + idx}
+                                srcSet={`${image} 800w, ${image} 400w`}
+                                sizes="(max-width: 600px) 800w, 400px"
+                                src={image} alt={""}/>
                 })}
             </div>
             <div className="absolute top-0 h-full w-full justify-between items-center flex text-white px-4 text-3xl">

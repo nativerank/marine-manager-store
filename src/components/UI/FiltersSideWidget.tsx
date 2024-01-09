@@ -7,7 +7,7 @@ import React, {memo} from "react";
 
 const FiltersSideWidget = () => {
     return (
-        <div>
+        <div className={""}>
             <section>
                 <div className="container-header">
                     <h2 className={"uk-h4 uk-margin-remove"}>Filters</h2>

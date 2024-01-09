@@ -6,7 +6,7 @@ type Props = {
     manufacturer: string
     year: string
 }
-const SPECS: { label: string, key: keyof Props }[] = [
+const SPECS: { label: string, key: keyof Props, hideOnMobile?: boolean }[] = [
     {
         label: 'Status',
         key: 'status'
@@ -17,7 +17,8 @@ const SPECS: { label: string, key: keyof Props }[] = [
     },
     {
         label: 'Manufacturer',
-        key: 'manufacturer'
+        key: 'manufacturer',
+        hideOnMobile: true
     },
     {
         label: 'Year',
@@ -27,8 +28,9 @@ const SPECS: { label: string, key: keyof Props }[] = [
 const PrimarySpecs: FC<Props> = (props) => {
     return (
         <div className={"flex divide-x mt-2"}>
-            {SPECS.map(({label, key}) => (
-                <div key={key} className={"px-4 text-xs text-center flex flex-wrap justify-center flex-col-reverse"}>
+            {SPECS.map(({label, key, hideOnMobile}) => (
+                <div key={key}
+                     className={`px-4 text-xs text-center flex-auto flex flex-wrap justify-center flex-col-reverse ${hideOnMobile && 'hidden lg:flex'}`}>
                     <span className={"block uppercase"}>
                         {label}
                     </span>

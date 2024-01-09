@@ -30,7 +30,7 @@ export const getCDNImage = ({
         return url.replace('https://marinemanagerpro-com.s3.us-west-2.amazonaws.com/', 'https://cdn.nativerank.com/mm-assets/')
     }
 
-    return false
+    return url
 }
 
 const indexName = 'prod_boats'
