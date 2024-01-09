@@ -196,6 +196,7 @@ const Hit = memo(({hit, onSelectBoatSpecs, sendEvent}: {
                         }
                     </div>
                 </div>
+
             </div>
 
         </div>
