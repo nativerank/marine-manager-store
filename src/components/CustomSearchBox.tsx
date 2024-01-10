@@ -76,7 +76,7 @@ function CustomSearchBox(props: UseSearchBoxProps) {
                     setQuery(event.currentTarget.value);
                 }}
                 autoFocus
-                className={"peer h-full w-full outline-none text-sm text-gray-700 pr-2"}
+                className={"peer h-full w-full outline-none text-sm text-gray-700 pr-2 rounded-r-lg"}
             />
 
             {/*<button type="submit"*/}

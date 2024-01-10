@@ -1,6 +1,4 @@
 @tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 select {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
@@ -12,3 +10,183 @@ select {
     print-color-adjust: exact;
     -webkit-appearance: none;
 }
+
+.custom-control-input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+
+.custom-control {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    cursor: pointer;
+}
+
+.form-check-label {
+    margin-bottom: 0;
+}
+
+.field-container-challenger {
+    position: relative;
+    display: block;
+}
+
+.custom-control-indicator-checkbox {
+    border-radius: 0.125rem;
+}
+
+.custom-control-indicator {
+    position: relative;
+    display: -webkit-inline-flex;
+    display: inline-flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    border: 1px solid #969696;
+    width: 1.3125rem;
+    height: 1.3125rem;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-flex: 0 0 auto;
+    flex: 0 0 auto;
+}
+
+.chip-with-icon:active, .chip-with-icon:focus, .chip-with-icon:hover {
+    background-color: #f2f2f2;
+    color: #343434;
+    border-color: #f2f2f2;
+}
+
+.chip:active, .chip:hover {
+    color: #343434;
+    background-color: #e5e5e5;
+    outline: none;
+}
+
+[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
+    cursor: pointer;
+}
+
+.chip-with-icon {
+    background-color: #f2f2f2;
+    position: relative;
+    border-color: #f2f2f2;
+}
+
+.chip {
+    background-color: #f2f2f2;
+    border: none;
+    color: #343434;
+    font-size: .75rem;
+    height: 1.6875rem;
+    padding: 0 1.25rem;
+}
+
+.chip:hover .chip-content {
+    right: 0.625rem;
+}
+
+.chip-content {
+    position: relative;
+    transition: right .5s cubic-bezier(.64, .04, .35, 1);
+    right: 0;
+}
+
+.chip:hover .chip-icon-container {
+    opacity: 1;
+    right: 0.3125rem;
+}
+
+.chip-icon-container {
+    position: absolute;
+    top: 50%;
+    margin-top: -0.625rem;
+    right: 0.625rem;
+    opacity: 0;
+    transition: all .5s cubic-bezier(.64, .04, .35, 1);
+}
+
+.chip-icon.chip-icon {
+    vertical-align: inherit;
+    background-color: #fff;
+    border-color: #f2f2f2;
+    color: #343434;
+}
+
+.overflow-visible {
+    overflow: visible;
+}
+
+.icon-fill-default {
+    fill: currentColor;
+}
+
+.icon {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.icon-border-circle {
+    border: 1px solid #e5e5e5;
+    border-radius: 50%;
+}
+
+.btn-sm {
+    border-radius: 20em;
+}
+
+.switch-bar-block {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+}
+
+.switch-bar-sm {
+    font-size: .875rem;
+    padding: 0.175rem;
+}
+
+.switch-bar {
+    border-radius: 5rem;
+    border: 1px solid transparent;
+    background-color: #f2f2f2;
+    display: -webkit-inline-flex;
+    display: inline-flex;
+    padding: 0.25rem;
+}
+
+.form-radio-control {
+    cursor: pointer;
+}
+
+.switch, .switch-control {
+    border-radius: 5rem;
+    padding: 0.1875rem 1.25rem;
+}
+
+.switch {
+    display: inline-block;
+    -webkit-flex: 1 1 auto;
+    flex: 1 1 auto;
+    cursor: pointer;
+    color: inherit;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.form-radio-control-input:checked + .switch, .switch-active, .switch[data-selected] {
+    cursor: auto;
+    color: #fff;
+    background-color: #111;
+}
+
+@tailwind components;
+@tailwind utilities;
