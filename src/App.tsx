@@ -12,12 +12,15 @@ import './index.css'
 import InfiniteGrid from "./components/UI/InfiniteGrid";
 import {initialUIState} from "./settings/initialUIStatae";
 import {SearchConfig} from "./settings/SearchConfig";
-import InfiniteHits from "./components/UI/InfiniteHits";
+import InfiniteHits from "./components/UI/InfiniteList";
 import SortByComponent from "./components/UI/SortByComponent";
 import {ScrollTo} from "./components/ScrollTo";
 import {routing} from "./utils";
 import FiltersSideWidget from "./components/UI/FiltersSideWidget";
 import CustomSearchBox from "./components/CustomSearchBox";
+import GridIcon from "./components/Icons/GridIcon";
+import ListIcon from "./components/Icons/ListIcon";
+import classNames from "classnames";
 // import './components/Pagination.css';
 
 
@@ -97,10 +100,10 @@ function App() {
             <ScrollTo>
                 <section className={"bg-white"}>
                     <main ref={containerRef} className={"py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6"}>
-                        <div className={"grid grid-flow-row-dense grid-cols-4"}>
-                            <div className={"hidden md:block"}>
+                        <div className={"flex gap-4"}>
+                            <div className={"hidden md:block w-[302px]"}>
                                 <FiltersSideWidget/>
-                                <footer className="container-filters-footer" data-layout="mobile">
+                                <footer className="container-filters-footer hidden" data-layout="mobile">
                                     <div className="container-filters-footer-button-wrapper">
                                         <ClearFiltersMobile containerRef={containerRef}/>
                                     </div>
@@ -109,22 +112,28 @@ function App() {
                                     </div>
                                 </footer>
                             </div>
-                            <div className={"col-span-4 md:col-span-3"}>
+                            <div className={"flex-1"}>
                                 <div>
                                     <div>
                                         <div className={"flex justify-between mx-auto gap-x-2"}>
                                             <CustomSearchBox/>
-                                            <div data-layout={"desktop"}>
-                                                <ul className="uk-iconnav">
+                                            <div className={"hidden lg:block"}>
+                                                <ul className="flex items">
                                                     <li>
                                                         <button onClick={() => setGridMode('grid')}
-                                                                className={gridMode === 'grid' ? "uk-active" : ''}
-                                                                data-uk-icon="icon: grid"></button>
+                                                                className={classNames('block p-2 py-3 bg-gray-200 hover:bg-gray-300 ', {
+                                                                    'opacity-30': gridMode === 'list'
+                                                                })}>
+                                                            <GridIcon/>
+                                                        </button>
                                                     </li>
                                                     <li>
                                                         <button onClick={() => setGridMode('list')}
-                                                                className={gridMode === 'list' ? "uk-active" : ''}
-                                                                data-uk-icon="icon: menu"></button>
+                                                                className={classNames('block p-2 py-3 bg-gray-200 hover:bg-gray-300 ', {
+                                                                    'opacity-30': gridMode === 'grid'
+                                                                })}>
+                                                            <ListIcon/>
+                                                        </button>
                                                     </li>
 
                                                 </ul>
@@ -152,10 +161,7 @@ function App() {
                                         />
 
                                         <NoResultsBoundary fallback={<NoResults/>}>
-                                            {gridMode === 'list' ? <InfiniteHits onSelectBoatSpecs={(specs: any) => {
-                                                    (window as any).UIkit.modal(document.querySelector('#modal-specs')).show()
-                                                    setSelectedBoatSpecs(specs)
-                                                }}/> :
+                                            {gridMode === 'list' ? <InfiniteHits/> :
                                                 <InfiniteGrid/>}
                                         </NoResultsBoundary>
                                     </div>
@@ -165,7 +171,7 @@ function App() {
                     </main>
                 </section>
             </ScrollTo>
-            <aside data-layout="mobile">
+            <aside data-layout="mobile" className={"hidden"}>
                 <button
                     className="filters-button"
                     data-action="open-overlay"

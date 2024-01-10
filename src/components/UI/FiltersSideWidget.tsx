@@ -1,71 +1,103 @@
 import {ClearFilters} from "../ClearFilters";
-import {ResultsNumberMobile} from "../ResultsNumberMobile";
-import {Panel} from "../Panel";
-import {HierarchicalMenu, RangeInput, RefinementList} from "react-instantsearch";
+import {RangeInput, useCurrentRefinements} from "react-instantsearch";
 import {PriceSlider} from "../PriceSlider";
-import React, {memo} from "react";
+import React, {memo, useCallback} from "react";
+import CollapsiblePanel from "../../SideFilter/CollapsiblePanel";
+import CustomRefinementList from "../CustomRefinementList";
+import CustomSwitch from "../CustomSwitcher";
+import CustomHierarchicalMenu from "../CustomHierarchicalMenu";
+import Panel from "../../SideFilter/Panel";
 
 const FiltersSideWidget = () => {
+
+    const currentRefinementsApi = useCurrentRefinements({
+        includedAttributes: ['location.city', 'status', 'lvl0', 'lvl1'],
+    });
+
+
+    const getSelectedItems = useCallback((attribute: string | string[]) => {
+        return currentRefinementsApi.items.find((item) => {
+            if (typeof attribute === 'string') {
+                return item.attribute === attribute
+            }
+
+            if (typeof attribute === 'object') {
+                return attribute.includes(item.attribute)
+            }
+        })?.refinements
+    }, [currentRefinementsApi])
+
     return (
-        <div className={""}>
+        <div className={"rounded border bg-white px-3 relative"}>
+
             <section>
                 <div className="container-header">
-                    <h2 className={"uk-h4 uk-margin-remove"}>Filters</h2>
                     <div className="clear-filters" data-layout="desktop">
                         <ClearFilters/>
                     </div>
 
-                    <div className="clear-filters" data-layout="mobile">
-                        <ResultsNumberMobile/>
-                    </div>
                 </div>
 
-                <div className="container-body">
-                    <Panel header="Location">
-                        <RefinementList attribute="location.city" sortBy={["name"]}/>
-                    </Panel>
-                    <Panel header="Condition">
-                        <RefinementList attribute="usage" sortBy={["name"]}/>
-                    </Panel>
 
-                    <Panel header="Manufacturer">
-                        <HierarchicalMenu
-                            showMore={true}
-                            sortBy={["name"]}
-                            showMoreLimit={100}
-                            limit={10}
+                <CustomSwitch attribute={"usage"} sortBy={["name"]}/>
 
-                            attributes={[
-                                'lvl0',
-                                'lvl1',
-                            ]}
-                        />
-                    </Panel>
-                    <Panel header="Category">
-                        <RefinementList attribute="category" sortBy={["name"]}/>
-                    </Panel>
+                <CollapsiblePanel
+                    borderTop
+                    title={"Location"}
+                    expanded
 
-                    <Panel header="Price">
-                        <PriceSlider attribute="price"/>
-                    </Panel>
-                    <Panel header="Year">
-                        <RangeInput
-                            attribute={'year'}
+                    selectedItems={getSelectedItems('location.city')}
+                    refine={currentRefinementsApi.refine}>
+                    <CustomRefinementList cacheRefinements={'location.city'} attribute="location.city"
+                                          sortBy={["name"]}/>
+                </CollapsiblePanel>
 
-                        />
-                    </Panel>
 
-                    <Panel header="Status">
-                        <RefinementList
-                            attribute="status"
-                            sortBy={["name"]}
+                <CollapsiblePanel title="Manufacturer"
+                                  selectedItems={getSelectedItems(['lvl0', 'lvl1'])}
+                                  expanded
+                                  borderTop
+                                  refine={currentRefinementsApi.refine}>
+                    <CustomHierarchicalMenu
+                        showMore={true}
+                        sortBy={["name"]}
+                        showMoreLimit={100}
+                        limit={10}
+                        showParentLevel={true}
+                        attributes={[
+                            'lvl0',
+                            'lvl1',
+                        ]}
+                    />
+                </CollapsiblePanel>
+                <CollapsiblePanel expanded borderTop title={"Category"} selectedItems={getSelectedItems('category')}
+                                  refine={currentRefinementsApi.refine}>
+                    <CustomRefinementList attribute="category" sortBy={["name"]}/>
+                </CollapsiblePanel>
 
-                        />
-                    </Panel>
+                <Panel header="Price" borderTop>
+                    <PriceSlider attribute="price"/>
+                </Panel>
+                <Panel header="Year" borderTop>
+                    <RangeInput
+                        attribute={'year'}
+                        classNames={{
+                            form: 'flex',
+                            input: 'w-full',
+                            label: 'flex-1',
+                            submit: 'px-4 bg-blue-800 block text-white py-2'
+                        }}
+                    />
+                </Panel>
 
-                    <canvas height={150} data-layout={"mobile"}></canvas>
+                <CollapsiblePanel borderTop title="Status" refine={currentRefinementsApi.refine}>
+                    <CustomRefinementList
+                        attribute="status"
+                        sortBy={["name"]}
+                    />
+                </CollapsiblePanel>
 
-                </div>
+
             </section>
 
         </div>

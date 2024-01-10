@@ -9,6 +9,7 @@ export function ScrollTo({children}: { children: React.ReactNode }) {
         const middleware = () => {
             return {
                 onStateChange() {
+                    return
                     const isFiltering = document.body.classList.contains('filtering');
                     const isTyping =
                         document.activeElement?.tagName === 'INPUT' &&

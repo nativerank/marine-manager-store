@@ -5,6 +5,10 @@ export function formatNumber(number: string | number): string {
     return Number(number).toLocaleString();
 }
 
+export function formatDollarNumber(number: string | number): string {
+    return '$' + Number(number).toLocaleString();
+}
+
 export function getBoatAttribute(name: string, attributes: any[]): string | null {
     return attributes.find((attr) => attr.name === name)?.value ?? null
 }
@@ -67,4 +71,35 @@ export const shortenString = (inputString: any, maxLength: any) => {
     } else {
         return inputString.slice(0, maxLength - 3) + '...';
     }
+}
+
+export const mergeArrays = (a: any, b: any) => {
+
+
+    if (!a || Array.isArray(a) && !a.length) {
+        return b
+    }
+    let newAr: any = {}
+    a.map((item: any) => {
+
+        newAr[item.label] = item
+        const bFound = b.findIndex((rItem: any) => {
+            return rItem.label === item.label
+        })
+        console.log({bFound})
+
+        if (bFound > -1) {
+            newAr[item.label] = {
+                ...item,
+                isRefined: b[bFound]['isRefined'],
+                count: b[bFound]['count'],
+            }
+        } else {
+            newAr[item.label]['count'] = 0
+        }
+
+    })
+
+    return Object.values(newAr)
+
 }

@@ -2,7 +2,7 @@ import {useInfiniteHits} from "react-instantsearch";
 import React, {memo, useRef} from "react";
 import Hit from "./Hit";
 
-const InfiniteHits = (props: any) => {
+const InfiniteList = (props: any) => {
 
     const {hits, isLastPage, showMore, sendEvent} = useInfiniteHits(props);
     const sentinelRef = useRef(null);
@@ -14,7 +14,7 @@ const InfiniteHits = (props: any) => {
                 <ul className="uk-grid uk-child-width-1-1" data-uk-grid>
                     {hits.map((hit: any) => (
                         <li ref={sentinelRef} key={hit.objectID} className="ais-InfiniteHits-item">
-                            <Hit hit={hit} sendEvent={sendEvent} onSelectBoatSpecs={props.onSelectBoatSpecs}/>
+                            <Hit hit={hit} sendEvent={sendEvent}/>
                         </li>
                     ))}
                 </ul>
@@ -38,4 +38,4 @@ const InfiniteHits = (props: any) => {
 
 }
 
-export default memo(InfiniteHits)
+export default memo(InfiniteList)

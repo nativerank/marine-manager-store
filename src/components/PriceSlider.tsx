@@ -20,6 +20,7 @@ function Handle({
         <>
             {/* Dummy element to make the tooltip draggable */}
 
+
             <div
                 style={{
                     position: 'absolute',
@@ -106,76 +107,89 @@ export function PriceSlider({
     }
 
     return (
-        <Slider
-            mode={2}
-            step={1}
-            domain={[range.min!, range.max!]}
-            values={start as number[]}
-            disabled={!canRefine}
-            onChange={onChange}
-            onUpdate={onUpdate}
-            rootStyle={{position: 'relative'}}
-            className="ais-RangeSlider"
-        >
-            <div className={"mock"} style={{paddingTop: 20}}/>
-            <Rail>
-                {({getRailProps}) => (
-                    <div className="slider-rail" {...getRailProps()} />
-                )}
-            </Rail>
+        <div>
+            <div className={"flex hidden items-center gap-2 p-1 mb-4"}>
+                <input type="text"
+                       defaultValue={ticksValues[0]}
+                       className={"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"}/>
+                <div>
+                    to
+                </div>
+                <input type="text"
+                       defaultValue={ticksValues[1]}
+                       className={"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"}/>
+            </div>
+            <Slider
+                mode={2}
+                step={1}
+                domain={[range.min!, range.max!]}
+                values={start as number[]}
+                disabled={!canRefine}
+                onChange={onChange}
+                onUpdate={onUpdate}
+                rootStyle={{position: 'relative'}}
+                className="ais-RangeSlider"
+            >
+                <div className={"mock"} style={{paddingTop: 20}}/>
+                <Rail>
+                    {({getRailProps}) => (
+                        <div className="slider-rail" {...getRailProps()} />
+                    )}
+                </Rail>
 
-            <Tracks left={false} right={false}>
-                {({tracks, getTrackProps}) => (
-                    <div>
-                        {tracks.map(({id, source, target}) => (
-                            <div
-                                key={id}
-                                className="slider-track"
-                                style={{
-                                    left: `${source.percent}%`,
-                                    width: `${target.percent - source.percent}%`,
-                                }}
-                                {...getTrackProps()}
-                            />
-                        ))}
-                    </div>
-                )}
-            </Tracks>
+                <Tracks left={false} right={false}>
+                    {({tracks, getTrackProps}) => (
+                        <div>
+                            {tracks.map(({id, source, target}) => (
+                                <div
+                                    key={id}
+                                    className="slider-track"
+                                    style={{
+                                        left: `${source.percent}%`,
+                                        width: `${target.percent - source.percent}%`,
+                                    }}
+                                    {...getTrackProps()}
+                                />
+                            ))}
+                        </div>
+                    )}
+                </Tracks>
 
-            <Handles>
-                {({handles, getHandleProps}) => (
-                    <div>
-                        {handles.map((handle) => (
-                            <Handle
-                                key={handle.id}
-                                handle={handle}
-                                domain={[range.min!, range.max!]}
-                                getHandleProps={getHandleProps}
-                            />
-                        ))}
-                    </div>
-                )}
-            </Handles>
+                <Handles>
+                    {({handles, getHandleProps}) => (
+                        <div>
+                            {handles.map((handle) => (
+                                <Handle
+                                    key={handle.id}
+                                    handle={handle}
+                                    domain={[range.min!, range.max!]}
+                                    getHandleProps={getHandleProps}
+                                />
+                            ))}
+                        </div>
+                    )}
+                </Handles>
 
-            <Ticks values={ticksValues}>
-                {({ticks}) => (
-                    <div>
-                        {ticks.map(({id, value, percent}) => (
-                            <div
-                                key={id}
-                                className="slider-tick"
-                                style={{
-                                    left: `${percent}%`,
-                                }}
-                            >
-                                {/* @ts-ignore */}
-                                <span style={{color: '#0f46f9', marginRight: 4}}>$</span>
-                                {formatNumber(value)}
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </Ticks>
-        </Slider>
+                <Ticks values={ticksValues}>
+                    {({ticks}) => (
+                        <div>
+                            {ticks.map(({id, value, percent}) => (
+                                <div
+                                    key={id}
+                                    className="slider-tick"
+                                    style={{
+                                        left: `${percent}%`,
+                                    }}
+                                >
+                                    {/* @ts-ignore */}
+                                    <span style={{color: '#0f46f9', marginRight: 4}}>$</span>
+                                    {formatNumber(value)}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </Ticks>
+            </Slider>
+        </div>
     );
 }
