@@ -21,6 +21,7 @@ import CustomSearchBox from "./components/CustomSearchBox";
 import GridIcon from "./components/Icons/GridIcon";
 import ListIcon from "./components/Icons/ListIcon";
 import classNames from "classnames";
+import Drawer from "./components/UI/Drawer";
 // import './components/Pagination.css';
 
 
@@ -191,7 +192,7 @@ function App() {
                     Filters
                 </button>
             </aside>
-
+            <Drawer/>
         </InstantSearch>
     );
 }

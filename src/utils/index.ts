@@ -86,7 +86,6 @@ export const mergeArrays = (a: any, b: any) => {
         const bFound = b.findIndex((rItem: any) => {
             return rItem.label === item.label
         })
-        console.log({bFound})
 
         if (bFound > -1) {
             newAr[item.label] = {
