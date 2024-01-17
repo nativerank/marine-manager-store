@@ -1,14 +1,11 @@
 import algoliasearch from 'algoliasearch/lite';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {Configure, InstantSearch, Stats,} from 'react-instantsearch';
 
 import {ClearFiltersMobile, NoResults, NoResultsBoundary, SaveFiltersMobile,} from './components';
 
 
-// import './Theme.css';
 import './index.css'
-// import './App.css';
-// import './App.mobile.css';
 import InfiniteGrid from "./components/UI/InfiniteGrid";
 import {initialUIState} from "./settings/initialUIStatae";
 import {SearchConfig} from "./settings/SearchConfig";
@@ -22,7 +19,7 @@ import GridIcon from "./components/Icons/GridIcon";
 import ListIcon from "./components/Icons/ListIcon";
 import classNames from "classnames";
 import Drawer from "./components/UI/Drawer";
-// import './components/Pagination.css';
+import CarouselSchema from "./components/Schema/CarouselSchema";
 
 
 const searchClient = algoliasearch(
@@ -30,12 +27,11 @@ const searchClient = algoliasearch(
     'aed708cd4183d38b9453be50384dc90b');
 
 
-function App() {
+const App = () => {
 
     const containerRef = useRef<HTMLElement>(null);
     const headerRef = useRef(null);
     const [gridMode, setGridMode] = useState('list');
-    const [selectedBoatSpecs, setSelectedBoatSpecs] = useState<any>();
 
 
     const openFilters = useCallback(() => {
@@ -69,18 +65,9 @@ function App() {
     }, [])
 
 
-    useEffect(() => {
-        if ((window as any).UIkit) {
-            (window as any).UIkit.util.on('#modal-specs', 'hide', function () {
-                setSelectedBoatSpecs(undefined)
-            });
-        }
-    }, []);
-
     if (!(window as any).MM_DEALER_ID) {
         return <>DEALER ID IS MISSING</>
     }
-
 
     return (
         <InstantSearch
@@ -98,6 +85,7 @@ function App() {
                 preserveSharedStateOnUnmount: true
             }}>
             <Configure {...SearchConfig}/>
+            <CarouselSchema/>
             <ScrollTo>
                 <section className={"bg-white"}>
                     <main ref={containerRef} className={"py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6"}>
@@ -196,6 +184,4 @@ function App() {
         </InstantSearch>
     );
 }
-
-
 export default App
