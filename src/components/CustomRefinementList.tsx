@@ -28,7 +28,6 @@ const CustomRefinementList = (props: UseRefinementListProps & { cacheRefinements
         }
     }, [items]);
 
-
     return (
         <>
 
@@ -52,7 +51,7 @@ const CustomRefinementList = (props: UseRefinementListProps & { cacheRefinements
                                         className={classNames(
                                             `custom-control-indicator custom-control-indicator-checkbox mr-2`,
                                             {
-                                                'bg-blue-900 border-transparent': item.isRefined,
+                                                'bg-[var(--mm-filter-accent)] border-transparent': item.isRefined,
                                                 'bg-white': !item.isRefined
                                             }
                                         )}
@@ -78,6 +77,7 @@ const CustomRefinementList = (props: UseRefinementListProps & { cacheRefinements
 
                 ))}
             </ul>
+
             {props.showMore && <button onClick={toggleShowMore} disabled={!canToggleShowMore}>
                 {isShowingMore ? 'Show less' : 'Show more'}
             </button>}

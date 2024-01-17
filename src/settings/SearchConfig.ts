@@ -1,7 +1,5 @@
-import {ConfigureProps} from "react-instantsearch";
-
-export const SearchConfig: ConfigureProps = {
-    // filters: `location.dealer.id=${(window as any).MM_DEALER_ID} AND published = 1`,
+export const SearchConfig = {
+    filters: `dealer_id=${(window as any).MM_DEALER_ID}`,
     attributesToSnippet: ['description:10'],
     snippetEllipsisText: "…",
     removeWordsIfNoResults: "allOptional",

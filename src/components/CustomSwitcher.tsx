@@ -21,7 +21,7 @@ const CustomSwitch = (props: UseRefinementListProps) => {
                                 }}
                                 className="form-radio-control-input custom-control-input" type="checkbox"
                                 checked={item.isRefined}/>
-                            <div className="w-full switch switch-radio">{item.value} Boats</div>
+                            <div className="w-full switch switch-radio">{item.value}</div>
                         </label>
                     ))}
 

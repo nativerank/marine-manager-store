@@ -107,7 +107,7 @@ export function PriceSlider({
     }
 
     return (
-        <div>
+        <div className={"pt-1"}>
             <div className={"flex hidden items-center gap-2 p-1 mb-4"}>
                 <input type="text"
                        defaultValue={ticksValues[0]}

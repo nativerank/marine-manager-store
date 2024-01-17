@@ -1,5 +1,5 @@
 export const initialUIState = {
-    prod_boats: {
+    prod_vehicles: {
         refinementList: (window as any).refinementList ?? {},
         hierarchicalMenu: (window as any).hierarchicalMenu ?? {}
     }

@@ -7,19 +7,19 @@ const SortByComponent = () => {
         items: [
             {
                 label: 'Sort By',
-                value: 'prod_boats',
+                value: 'prod_vehicles',
             },
             {
                 label: 'Recently Added',
-                value: 'prod_boats_latest',
+                value: 'prod_vehicles_latest',
             },
             {
                 label: 'Price: Low to High',
-                value: 'prod_boats_price_asc',
+                value: 'prod_vehicles_price_asc',
             },
             {
                 label: 'Price: High to Low',
-                value: 'prod_boats_price_desc',
+                value: 'prod_vehicles_price_desc',
             }
         ]
     }

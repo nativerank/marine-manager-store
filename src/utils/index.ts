@@ -37,7 +37,7 @@ export const getCDNImage = ({
     return url
 }
 
-const indexName = 'prod_boats'
+const indexName = 'prod_vehicles'
 
 export const routing: RouterProps = {
     router: history({
@@ -56,7 +56,7 @@ export const calculateMonthlyPayment = ({
     APR: number,
     term: number,
     amountFinanced: number
-}) => (amountFinanced * (APR / 12) * (Math.pow((1 + (APR / 12)), APR)) / ((Math.pow((1 + (APR / 12)), term)) - 1)).toFixed(0)
+}) => (amountFinanced * (APR / 12) * (Math.pow((1 + (APR / 12)), term)) / ((Math.pow((1 + (APR / 12)), term)) - 1)).toFixed(0)
 
 export const convertHtmlToString = (htmlString: any, slice = 250) => {
     const parser = new DOMParser();
@@ -101,4 +101,11 @@ export const mergeArrays = (a: any, b: any) => {
 
     return Object.values(newAr)
 
+}
+
+export function getDescendantProp(obj: object, desc: string) {
+    var arr = desc.split(".");
+    // @ts-ignore
+    while (arr.length && (obj = obj[arr.shift()])) ;
+    return obj;
 }

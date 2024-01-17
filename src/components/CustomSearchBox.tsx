@@ -58,7 +58,7 @@ function CustomSearchBox(props: UseSearchBoxProps) {
                     ></path>
                 </svg>
             </div>
-            <label htmlFor="search-boats" className="sr-only">Search Boats</label>
+            <label htmlFor="search-boats" className="sr-only">Search vehicles...</label>
 
 
             <input
@@ -67,7 +67,7 @@ function CustomSearchBox(props: UseSearchBoxProps) {
                 autoComplete="off"
                 autoCorrect="off"
                 autoCapitalize="off"
-                placeholder="Search boats"
+                placeholder="Search vehicles"
                 spellCheck={false}
                 maxLength={512}
                 type="search"

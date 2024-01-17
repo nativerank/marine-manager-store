@@ -11,7 +11,7 @@ import Panel from "../../SideFilter/Panel";
 const FiltersSideWidget = () => {
 
     const currentRefinementsApi = useCurrentRefinements({
-        includedAttributes: ['location.city', 'status', 'lvl0', 'lvl1'],
+        includedAttributes: ['location.city', 'type', 'categories.name', 'status', 'lvl0', 'lvl1'],
     });
 
 
@@ -45,11 +45,21 @@ const FiltersSideWidget = () => {
                     borderTop
                     title={"Location"}
                     expanded
-
                     selectedItems={getSelectedItems('location.city')}
                     refine={currentRefinementsApi.refine}>
                     <CustomRefinementList cacheRefinements={'location.city'} attribute="location.city"
                                           sortBy={["name"]}/>
+                </CollapsiblePanel>
+
+
+                <CollapsiblePanel expanded borderTop title={"Vehicle Type"} selectedItems={getSelectedItems('type')}
+                                  refine={currentRefinementsApi.refine}>
+                    <CustomRefinementList attribute="type" sortBy={["name"]}/>
+                </CollapsiblePanel>
+
+                <CollapsiblePanel expanded borderTop title={"Category"} selectedItems={getSelectedItems('category')}
+                                  refine={currentRefinementsApi.refine}>
+                    <CustomRefinementList attribute="categories.name" sortBy={["name"]}/>
                 </CollapsiblePanel>
 
 
@@ -70,10 +80,6 @@ const FiltersSideWidget = () => {
                         ]}
                     />
                 </CollapsiblePanel>
-                <CollapsiblePanel expanded borderTop title={"Category"} selectedItems={getSelectedItems('category')}
-                                  refine={currentRefinementsApi.refine}>
-                    <CustomRefinementList attribute="category" sortBy={["name"]}/>
-                </CollapsiblePanel>
 
                 <Panel header="Price" borderTop>
                     <PriceSlider attribute="price"/>
@@ -82,20 +88,22 @@ const FiltersSideWidget = () => {
                     <RangeInput
                         attribute={'year'}
                         classNames={{
-                            form: 'flex',
+                            form: 'flex gap-2',
                             input: 'w-full',
                             label: 'flex-1',
-                            submit: 'px-4 bg-blue-800 block text-white py-2'
+                            submit: 'px-4 bg-blue-800 block text-white py-3'
                         }}
                     />
                 </Panel>
 
-                <CollapsiblePanel borderTop title="Status" refine={currentRefinementsApi.refine}>
-                    <CustomRefinementList
-                        attribute="status"
-                        sortBy={["name"]}
-                    />
-                </CollapsiblePanel>
+
+                {/*<CollapsiblePanel borderTop title="Status" selectedItems={getSelectedItems('status')}*/}
+                {/*                  refine={currentRefinementsApi.refine}>*/}
+                {/*    <CustomRefinementList*/}
+                {/*        attribute="status"*/}
+                {/*        sortBy={["name"]}*/}
+                {/*    />*/}
+                {/*</CollapsiblePanel>*/}
 
 
             </section>

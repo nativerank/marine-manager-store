@@ -48,12 +48,12 @@ const Drawer = () => {
 
     return (
         <>
-            {expanded && <div className={"z-10 fixed inset-0 bg-black opacity-60"}>
+            {expanded && <div className={"z-10 fixed inset-0 bg-black opacity-60 "}>
 
             </div>}
             <div id="drawer-swipe"
                  ref={wrapperRef}
-                 className={classNames("shadow fixed z-40 w-full overflow-y-auto bg-white border-t border-gray-200 rounded-t-lg  transition-transform bottom-0 left-0 right-0", {
+                 className={classNames("lg:hidden shadow fixed z-40 w-full overflow-y-auto bg-white border-t border-gray-200 rounded-t-lg  transition-transform bottom-0 left-0 right-0", {
                      'transform-none': expanded,
                      'translate-y-full bottom-[50px]': !expanded
                  })}

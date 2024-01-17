@@ -22,7 +22,7 @@ function CustomHierarchicalMenu(props: UseHierarchicalMenuProps) {
                 onNavigate={refine}
                 createURL={createURL}
             />
-            {props.showMore && (
+            {canToggleShowMore && (
                 <div className={"border-t border-dotted"}>
                     <button
                         className={"w-full py-2 bg-gray-200"}
@@ -81,7 +81,7 @@ function HierarchicalList({
                                     className={classNames(
                                         `custom-control-indicator custom-control-indicator-checkbox mr-2 rounded-full`,
                                         {
-                                            'bg-blue-900 border-transparent': item.isRefined,
+                                            'bg-[var(--mm-filter-accent)] border-transparent': item.isRefined,
                                             'bg-white': !item.isRefined
                                         }
                                     )}
@@ -95,7 +95,7 @@ function HierarchicalList({
                                 </div>
                             </div>}
                             <div className={classNames("w-full", {
-                                'text-blue-700': item.isRefined && !isChild
+                                'text-[var(--mm-filter-accent)]': item.isRefined && !isChild
                             })}>
                                 <div className="flex justify-between">
                                     <div>{item.label}</div>

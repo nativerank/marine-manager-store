@@ -21,7 +21,7 @@ function InfiniteGrid(props: any) {
     return (
         <div>
             <div className="ais-InfiniteList">
-                <div data-uk-grid className="grid gap-4 grid-cols-12">
+                <div className="grid gap-4 grid-cols-12">
                     {hits.map((hit: any) => (
                         <div ref={sentinelRef} key={hit.objectID} className="col-span-12 md:col-span-6 lg:col-span-4">
                             <ColHit
@@ -32,13 +32,12 @@ function InfiniteGrid(props: any) {
             </div>
             {!isLastPage && <div style={{textAlign: 'center', paddingTop: 30}}>
                 <a style={{
-                    background: '#1d45f9',
-                    color: '#fff',
                     padding: '0 20px',
                     lineHeight: '36px',
                     display: 'inline-block',
                     cursor: 'pointer'
                 }}
+                   className={"bg-[var(--mm-cta-show-more-bg)] hover:bg-[var(--mm-cta-show-more-bg-hover)] text-[var(--mm-cta-show-more-text)]"}
                    onClick={() => showMore()}
                 >
                     Show More

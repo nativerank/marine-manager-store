@@ -30,27 +30,28 @@ const ColHit = memo(({hit, sendEvent}: {
     const [viewDetailsTab, setViewDetailsTab] = useState(false);
     const [height, setHeight] = useState(0);
     const link = useMemo(() => {
-        return `${(window as any).MM_DOMAIN}/${hit.usage.toLowerCase()}${(window as any).MM_USAGE_SLUG}/${hit.manufacturer.slug}/${hit.slug}`
+        return `${(window as any).MM_DOMAIN}/${hit.usage.toLowerCase()}-${hit.type.toLowerCase()}${(window as any).MM_USAGE_SLUG}/${hit.manufacturer.slug}/${hit.slug}`
     }, [hit])
 
     const thumbImages = useMemo(() => {
-        if (hit.images && Array.isArray(hit.images) && hit.images.length > 0) {
+        if (hit.media && Array.isArray(hit.media) && hit.media.length > 0) {
 
-            return hit.images.map((image: string) => {
+            return hit.media.map((image: any) => {
 
                 return getCDNImage({
-                    url: image,
+                    url: image.cdnUrl,
                     transform: 'w-800,h-614'
                 }).replace(' ', '%20')
 
             })
         }
         return false
-    }, [hit.images])
+    }, [hit.media])
 
     const atLeastOneImageExists = useMemo(() => {
-        return thumbImages
+        return thumbImages.length
     }, [thumbImages])
+
 
     const moreThanOneImageExists = useMemo(() => {
         return thumbImages?.length > 1
@@ -80,7 +81,7 @@ const ColHit = memo(({hit, sendEvent}: {
                 <div className="">
                     <div className={"mb-2 border-b pb-2"}>
 
-                        <a href={link} className={"text-[#333] hover:text-amber-600"}
+                        <a href={link} className={"text-[#333] hover:text-[var(--mm-title-link-hover)]"}
                            onClick={() => sendEvent('click', hit, 'Boat Clicked')}>
                             <h2 className={"font-bold lg:font-bold "}>
                                 <Highlight attribute="name" highlightedTagName="mark" hit={hit}/>
@@ -90,12 +91,12 @@ const ColHit = memo(({hit, sendEvent}: {
                     <div className={"flex pb-1.5 divide-x gap-x-2 lg:gap-x-1 items-center"}>
                         <div className={"flex-none w-20"}>
                             <div
-                                className={"bg-amber-600 text-amber-50 inline-block px-2 uppercase text-sm shadow-amber-500 shadow-sm rounded"}>
+                                className={"bg-[var(--mm-usage-badge-bg)] text-[var(--mm-usage-badge-text)] inline-block px-2 uppercase text-sm shadow-[var(--mm-usage-badge-shadow)] shadow-sm rounded"}>
                                 {hit.usage}
                             </div>
                         </div>
                         <div className={"flex-1"}>
-                            <Price price={hit.price} status={hit.status}/>
+                            <Price hit={hit} usage={hit.usage} price={hit.price} status={hit.status}/>
                         </div>
                     </div>
                     <div className={"border-b relative"}>
@@ -105,16 +106,20 @@ const ColHit = memo(({hit, sendEvent}: {
                         <div className={"pb-2"}>
                             <PrimarySpecs
                                 compact
+                                stock_number={hit.stock_number}
                                 status={hit.status}
                                 location={`${hit.location.city}, ${hit.location.state}`}
                                 manufacturer={hit.manufacturer.name}
                                 year={hit.year}
+                                boat_attributes={hit.specifications}
                             />
                         </div>
                         <div className={"border-b relative"}>
                         </div>
                         <div className={"pt-4 flex gap-4 flex-wrap"}>
-                            <div className={"basis-full lg:flex-1 hidden"}>
+                            <a href={link}
+                               onClick={() => sendEvent('click', hit, 'Boat Clicked')}
+                               className={"basis-full lg:flex-1 hidden"}>
                                 {
                                     descString.length ?
                                         <p className="text-sm">{descString}<strong> READ
@@ -123,14 +128,14 @@ const ColHit = memo(({hit, sendEvent}: {
                                         :
                                         <p className={"hit-description-p"}>
                                             Checkout
-                                            the {hit.name} by {hit.location.dealer.name} at {hit.location.city}, {hit.location.state} location... <strong> READ
+                                            the {hit.name} by {hit.dealer.name} at {hit.location.city}, {hit.location.state} location... <strong> READ
                                             MORE </strong>
                                         </p>
                                 }
-                            </div>
+                            </a>
                             <div className={"w-full pb-4"}>
                                 <button
-                                    className={"justify-center text-center flex items-center gap-2 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3.5 me-2 mb-2 focus:outline-none"}
+                                    className={"justify-center text-center flex items-center gap-2 w-full text-[var(--mm-cta-check-availability-text)] bg-[var(--mm-cta-check-availability-bg)] hover:bg-[var(--mm-cta-check-availability-bg-hover)] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3.5 me-2 mb-2 focus:outline-none"}
                                     onClick={() => {
                                         window.dispatchEvent(new CustomEvent('check_availability', {
                                             detail: {
@@ -144,7 +149,7 @@ const ColHit = memo(({hit, sendEvent}: {
                                 </button>
                                 <a
                                     href={link} onClick={() => sendEvent('click', hit, 'Boat Clicked')}
-                                    className={"group flex items-center justify-between w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none text-center"}
+                                    className={"group flex items-center justify-between w-full text-[var(--mm-cta-view-boat-text)] bg-[var(--mm-cta-view-boat-bg)] hover:bg-[var(--mm-cta-view-boat-bg-hover)] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none text-center"}
                                 >
                                     View Boat <IconNarrowRight
                                     className={"block transition-transform group-hover:translate-x-1 ease-in-out"}/>
@@ -180,9 +185,11 @@ const ColHit = memo(({hit, sendEvent}: {
             >
                 <div ref={ref}>
                     <div className={" border-t"}></div>
-                    {hit?.attributes.length ? <AllSpecs specs={hit.attributes}/> :
+                    {hit?.specifications.length ? <AllSpecs specs={hit.specifications}/> :
                         <PrimarySpecs status={hit.status} location={hit.location.name}
                                       manufacturer={hit.manufacturer.name}
+                                      stock_number={hit.stock_number}
+                                      boat_attributes={hit.specifications}
                                       year={hit.year}/>}
                     <div className={"border-t pt-4 mt-4 pb-8"}>
                         {
@@ -193,7 +200,7 @@ const ColHit = memo(({hit, sendEvent}: {
                                 :
                                 <p className={"hit-description-p"}>
                                     Checkout
-                                    the {hit.name} by {hit.location.dealer.name} at {hit.location.city}, {hit.location.state} location... <strong> READ
+                                    the {hit.name} by {hit.dealer.name} at {hit.location.city}, {hit.location.state} location... <strong> READ
                                     MORE </strong>
                                 </p>
                         }

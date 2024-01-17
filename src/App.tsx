@@ -26,8 +26,8 @@ import Drawer from "./components/UI/Drawer";
 
 
 const searchClient = algoliasearch(
-    'WR1LHA5AEI',
-    'aed708cd4183d38b9453be50384dc90b');
+    '07KQNXTLVA',
+    'd4120219031d0bbfab6641c86ffc08e3');
 
 
 function App() {
@@ -85,7 +85,7 @@ function App() {
     return (
         <InstantSearch
             searchClient={searchClient}
-            indexName={'prod_boats'}
+            indexName={'prod_vehicles'}
             initialUiState={initialUIState}
             insights={{
                 insightsInitParams: {
@@ -97,6 +97,7 @@ function App() {
             future={{
                 preserveSharedStateOnUnmount: true
             }}>
+            {/*@ts-ignore*/}
             <Configure {...SearchConfig}/>
             <ScrollTo>
                 <section className={"bg-white"}>
