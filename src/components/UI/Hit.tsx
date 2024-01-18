@@ -102,7 +102,7 @@ const Hit = memo(({hit, sendEvent}: {
                                 Featured
                             </div> : ''}
                             <a href={link} className={"text-[#333] hover:text-[var(--mm-title-link-hover)]"}
-                               onClick={() => sendEvent('click', hit, 'Boat Clicked')}>
+                               onClick={() => sendEvent('click', hit, 'Vehicle Clicked')}>
                                 <h2 className={"font-bold lg:font-black text-md lg:text-2xl"}>
                                     <Highlight attribute="name" highlightedTagName="mark" hit={hit}/>
                                 </h2>
@@ -136,7 +136,7 @@ const Hit = memo(({hit, sendEvent}: {
                                     descString.length ?
                                         <p className="text-sm">{descString}<a href={link}
                                                                               className={"font-bold"}
-                                                                              onClick={() => sendEvent('click', hit, 'Boat Clicked')}> READ
+                                                                              onClick={() => sendEvent('click', hit, 'Vehicle Clicked')}> READ
                                             MORE</a>
                                         </p>
                                         :
@@ -145,7 +145,7 @@ const Hit = memo(({hit, sendEvent}: {
                                             the {hit.name} by {hit.dealer.name} at {hit.location.city}, {hit.location.state} location...<a
                                             href={link}
                                             className={"font-bold"}
-                                            onClick={() => sendEvent('click', hit, 'Boat Clicked')}> READ
+                                            onClick={() => sendEvent('click', hit, 'Vehicle Clicked')}> READ
                                             MORE</a>
                                         </p>
                                 }
@@ -165,10 +165,10 @@ const Hit = memo(({hit, sendEvent}: {
                                     <MessageCheckIcon/> Check Availability
                                 </button>
                                 <a
-                                    href={link} onClick={() => sendEvent('click', hit, 'Boat Clicked')}
+                                    href={link} onClick={() => sendEvent('click', hit, 'Vehicle Clicked')}
                                     className={"group flex items-center justify-between w-full text-[var(--mm-cta-view-boat-text)] bg-[var(--mm-cta-view-boat-bg)] hover:bg-[var(--mm-cta-view-boat-bg-hover)] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none text-center"}
                                 >
-                                    View Boat <IconNarrowRight
+                                    View {hit.type ?? 'Vehicle'} <IconNarrowRight
                                     className={"block transition-transform group-hover:translate-x-1 ease-in-out"}/>
                                 </a>
                             </div>

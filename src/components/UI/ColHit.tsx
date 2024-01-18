@@ -82,7 +82,7 @@ const ColHit = memo(({hit, sendEvent}: {
                     <div className={"mb-2 border-b pb-2"}>
 
                         <a href={link} className={"text-[#333] hover:text-[var(--mm-title-link-hover)]"}
-                           onClick={() => sendEvent('click', hit, 'Boat Clicked')}>
+                           onClick={() => sendEvent('click', hit, 'Vehicle Clicked')}>
                             <h2 className={"font-bold lg:font-bold "}>
                                 <Highlight attribute="name" highlightedTagName="mark" hit={hit}/>
                             </h2>
@@ -118,7 +118,7 @@ const ColHit = memo(({hit, sendEvent}: {
                         </div>
                         <div className={"pt-4 flex gap-4 flex-wrap"}>
                             <a href={link}
-                               onClick={() => sendEvent('click', hit, 'Boat Clicked')}
+                               onClick={() => sendEvent('click', hit, 'Vehicle Clicked')}
                                className={"basis-full lg:flex-1 hidden"}>
                                 {
                                     descString.length ?
@@ -148,10 +148,10 @@ const ColHit = memo(({hit, sendEvent}: {
                                     <MessageCheckIcon/> Check Availability
                                 </button>
                                 <a
-                                    href={link} onClick={() => sendEvent('click', hit, 'Boat Clicked')}
+                                    href={link} onClick={() => sendEvent('click', hit, 'Vehicle Clicked')}
                                     className={"group flex items-center justify-between w-full text-[var(--mm-cta-view-boat-text)] bg-[var(--mm-cta-view-boat-bg)] hover:bg-[var(--mm-cta-view-boat-bg-hover)] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none text-center"}
                                 >
-                                    View Boat <IconNarrowRight
+                                    View {hit.type ?? 'Vehicle'} <IconNarrowRight
                                     className={"block transition-transform group-hover:translate-x-1 ease-in-out"}/>
                                 </a>
                             </div>

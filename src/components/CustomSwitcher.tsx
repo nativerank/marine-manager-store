@@ -12,7 +12,7 @@ const CustomSwitch = (props: UseRefinementListProps) => {
         <div className={"-mx-3 px-3 py-3 pt-6"}>
             <div className={"-mx-3 mb-3 px-3"}>
                 <fieldset className={"switch-bar switch-bar-sm switch-bar-block w-full"}>
-                    <legend className="sr-only">Boat Condition</legend>
+                    <legend className="sr-only">Vehicle Condition</legend>
                     {items.map((item) => (
                         <label key={item.value} className="form-radio-control w-full">
                             <input
