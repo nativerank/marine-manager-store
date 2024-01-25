@@ -95,7 +95,7 @@ const ColHit = memo(({hit, sendEvent}: {
                             </div>
                         </div>
                         <div className={"flex-1"}>
-                            <Price price={hit.price} status={hit.status}/>
+                            <Price hit={hit} price={hit.price} status={hit.status}/>
                         </div>
                     </div>
                     <div className={"border-b relative"}>

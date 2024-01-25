@@ -56,7 +56,7 @@ export const calculateMonthlyPayment = ({
     APR: number,
     term: number,
     amountFinanced: number
-}) => (amountFinanced * (APR / 12) * (Math.pow((1 + (APR / 12)), APR)) / ((Math.pow((1 + (APR / 12)), term)) - 1)).toFixed(0)
+}) => (amountFinanced * (APR / 12) * (Math.pow((1 + (APR / 12)), term)) / ((Math.pow((1 + (APR / 12)), term)) - 1)).toFixed(0)
 
 export const convertHtmlToString = (htmlString: any, slice = 250) => {
     const parser = new DOMParser();

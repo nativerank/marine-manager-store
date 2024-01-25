@@ -92,7 +92,7 @@ const Hit = memo(({hit, sendEvent}: {
                             </a>
                         </div>
                         <div className={"pl-4 lg:pl-0"}>
-                            <Price price={hit.price} status={hit.status}/>
+                            <Price hit={hit} price={hit.price} status={hit.status}/>
                         </div>
                     </div>
                     <div className={"border-b relative"}>
