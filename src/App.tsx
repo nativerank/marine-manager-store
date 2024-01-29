@@ -1,14 +1,11 @@
 import algoliasearch from 'algoliasearch/lite';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {Configure, InstantSearch, Stats,} from 'react-instantsearch';
 
 import {ClearFiltersMobile, NoResults, NoResultsBoundary, SaveFiltersMobile,} from './components';
 
 
-// import './Theme.css';
 import './index.css'
-// import './App.css';
-// import './App.mobile.css';
 import InfiniteGrid from "./components/UI/InfiniteGrid";
 import {initialUIState} from "./settings/initialUIStatae";
 import {SearchConfig} from "./settings/SearchConfig";
@@ -26,8 +23,8 @@ import Drawer from "./components/UI/Drawer";
 
 
 const searchClient = algoliasearch(
-    '07KQNXTLVA',
-    'd4120219031d0bbfab6641c86ffc08e3');
+    'WR1LHA5AEI',
+    'aed708cd4183d38b9453be50384dc90b');
 
 
 function App() {
@@ -35,7 +32,6 @@ function App() {
     const containerRef = useRef<HTMLElement>(null);
     const headerRef = useRef(null);
     const [gridMode, setGridMode] = useState('list');
-    const [selectedBoatSpecs, setSelectedBoatSpecs] = useState<any>();
 
 
     const openFilters = useCallback(() => {
@@ -69,14 +65,6 @@ function App() {
     }, [])
 
 
-    useEffect(() => {
-        if ((window as any).UIkit) {
-            (window as any).UIkit.util.on('#modal-specs', 'hide', function () {
-                setSelectedBoatSpecs(undefined)
-            });
-        }
-    }, []);
-
     if (!(window as any).MM_DEALER_ID) {
         return <>DEALER ID IS MISSING</>
     }
@@ -85,7 +73,7 @@ function App() {
     return (
         <InstantSearch
             searchClient={searchClient}
-            indexName={'prod_vehicles'}
+            indexName={'prod_boats'}
             initialUiState={initialUIState}
             insights={{
                 insightsInitParams: {
@@ -97,8 +85,8 @@ function App() {
             future={{
                 preserveSharedStateOnUnmount: true
             }}>
-            {/*@ts-ignore*/}
             <Configure {...SearchConfig}/>
+
             <ScrollTo>
                 <section className={"bg-white"}>
                     <main ref={containerRef} className={"py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6"}>

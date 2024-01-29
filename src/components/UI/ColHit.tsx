@@ -26,32 +26,31 @@ const ColHit = memo(({hit, sendEvent}: {
     sendEvent: SendEventForHits
 }) => {
 
-    const descString = convertHtmlToString(hit.description, 140);
+    const descString = convertHtmlToString(hit.description ?? '', 140);
     const [viewDetailsTab, setViewDetailsTab] = useState(false);
     const [height, setHeight] = useState(0);
     const link = useMemo(() => {
-        return `${(window as any).MM_DOMAIN}/${hit.usage.toLowerCase()}-${hit.type.toLowerCase()}${(window as any).MM_USAGE_SLUG}/${hit.manufacturer.slug}/${hit.slug}`
+        return `${(window as any).MM_DOMAIN}/${hit.usage.toLowerCase()}${(window as any).MM_USAGE_SLUG}/${hit.manufacturer.slug}/${hit.slug}`
     }, [hit])
 
     const thumbImages = useMemo(() => {
-        if (hit.media && Array.isArray(hit.media) && hit.media.length > 0) {
+        if (hit.images && Array.isArray(hit.images) && hit.images.length > 0) {
 
-            return hit.media.map((image: any) => {
+            return hit.images.map((image: string) => {
 
                 return getCDNImage({
-                    url: image.cdnUrl,
+                    url: image,
                     transform: 'w-800,h-614'
                 }).replace(' ', '%20')
 
             })
         }
         return false
-    }, [hit.media])
+    }, [hit.images])
 
     const atLeastOneImageExists = useMemo(() => {
-        return thumbImages.length
+        return thumbImages
     }, [thumbImages])
-
 
     const moreThanOneImageExists = useMemo(() => {
         return thumbImages?.length > 1
@@ -82,7 +81,7 @@ const ColHit = memo(({hit, sendEvent}: {
                     <div className={"mb-2 border-b pb-2"}>
 
                         <a href={link} className={"text-[#333] hover:text-[var(--mm-title-link-hover)]"}
-                           onClick={() => sendEvent('click', hit, 'Vehicle Clicked')}>
+                           onClick={() => sendEvent('click', hit, 'Boat Clicked')}>
                             <h2 className={"font-bold lg:font-bold "}>
                                 <Highlight attribute="name" highlightedTagName="mark" hit={hit}/>
                             </h2>
@@ -111,7 +110,7 @@ const ColHit = memo(({hit, sendEvent}: {
                                 location={`${hit.location.city}, ${hit.location.state}`}
                                 manufacturer={hit.manufacturer.name}
                                 year={hit.year}
-                                boat_attributes={hit.specifications}
+                                boat_attributes={hit.attributes}
                             />
                         </div>
                         <div className={"border-b relative"}>
@@ -128,7 +127,7 @@ const ColHit = memo(({hit, sendEvent}: {
                                         :
                                         <p className={"hit-description-p"}>
                                             Checkout
-                                            the {hit.name} by {hit.dealer.name} at {hit.location.city}, {hit.location.state} location... <strong> READ
+                                            the {hit.name} by {hit.location.dealer.name} at {hit.location.city}, {hit.location.state} location... <strong> READ
                                             MORE </strong>
                                         </p>
                                 }
@@ -148,10 +147,10 @@ const ColHit = memo(({hit, sendEvent}: {
                                     <MessageCheckIcon/> Check Availability
                                 </button>
                                 <a
-                                    href={link} onClick={() => sendEvent('click', hit, 'Vehicle Clicked')}
-                                    className={"group flex items-center justify-between w-full text-[var(--mm-cta-view-boat-text)] bg-[var(--mm-cta-view-boat-bg)] hover:bg-[var(--mm-cta-view-boat-bg-hover)] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none text-center"}
+                                    href={link} onClick={() => sendEvent('click', hit, 'Boat Clicked')}
+                                    className={"group flex items-center justify-between w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none text-center"}
                                 >
-                                    View {hit.type ?? 'Vehicle'} <IconNarrowRight
+                                    View Boat <IconNarrowRight
                                     className={"block transition-transform group-hover:translate-x-1 ease-in-out"}/>
                                 </a>
                             </div>
@@ -185,11 +184,11 @@ const ColHit = memo(({hit, sendEvent}: {
             >
                 <div ref={ref}>
                     <div className={" border-t"}></div>
-                    {hit?.specifications.length ? <AllSpecs specs={hit.specifications}/> :
+                    {hit?.attributes.length ? <AllSpecs specs={hit.attributes}/> :
                         <PrimarySpecs status={hit.status} location={hit.location.name}
                                       manufacturer={hit.manufacturer.name}
                                       stock_number={hit.stock_number}
-                                      boat_attributes={hit.specifications}
+                                      boat_attributes={hit.attributes}
                                       year={hit.year}/>}
                     <div className={"border-t pt-4 mt-4 pb-8"}>
                         {
@@ -200,7 +199,7 @@ const ColHit = memo(({hit, sendEvent}: {
                                 :
                                 <p className={"hit-description-p"}>
                                     Checkout
-                                    the {hit.name} by {hit.dealer.name} at {hit.location.city}, {hit.location.state} location... <strong> READ
+                                    the {hit.name} by {hit.location.dealer.name} at {hit.location.city}, {hit.location.state} location... <strong> READ
                                     MORE </strong>
                                 </p>
                         }

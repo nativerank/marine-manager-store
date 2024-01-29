@@ -27,32 +27,31 @@ const Hit = memo(({hit, sendEvent}: {
     sendEvent: SendEventForHits
 }) => {
 
-    const descString = convertHtmlToString(hit.description, 140);
+    const descString = convertHtmlToString(hit.description ?? '', 140);
     const [viewDetailsTab, setViewDetailsTab] = useState(false);
     const [height, setHeight] = useState(0);
     const link = useMemo(() => {
-        return `${(window as any).MM_DOMAIN}/${hit.usage.toLowerCase()}-${hit.type.toLowerCase()}${(window as any).MM_USAGE_SLUG}/${hit.manufacturer.slug}/${hit.slug}`
+        return `${(window as any).MM_DOMAIN}/${hit.usage.toLowerCase()}${(window as any).MM_USAGE_SLUG}/${hit.manufacturer.slug}/${hit.slug}`
     }, [hit])
 
     const thumbImages = useMemo(() => {
-        if (hit.media && Array.isArray(hit.media) && hit.media.length > 0) {
+        if (hit.images && Array.isArray(hit.images) && hit.images.length > 0) {
 
-            return hit.media.map((image: any) => {
+            return hit.images.map((image: string) => {
 
                 return getCDNImage({
-                    url: image.cdnUrl,
+                    url: image,
                     transform: 'w-800,h-614'
                 }).replace(' ', '%20')
 
             })
         }
         return false
-    }, [hit.media])
+    }, [hit.images])
 
     const atLeastOneImageExists = useMemo(() => {
-        return thumbImages.length
+        return thumbImages
     }, [thumbImages])
-
 
     const moreThanOneImageExists = useMemo(() => {
         return thumbImages?.length > 1
@@ -102,7 +101,7 @@ const Hit = memo(({hit, sendEvent}: {
                                 Featured
                             </div> : ''}
                             <a href={link} className={"text-[#333] hover:text-[var(--mm-title-link-hover)]"}
-                               onClick={() => sendEvent('click', hit, 'Vehicle Clicked')}>
+                               onClick={() => sendEvent('click', hit, 'Boat Clicked')}>
                                 <h2 className={"font-bold lg:font-black text-md lg:text-2xl"}>
                                     <Highlight attribute="name" highlightedTagName="mark" hit={hit}/>
                                 </h2>
@@ -120,7 +119,7 @@ const Hit = memo(({hit, sendEvent}: {
                     <div className={'hit-content'}>
                         <div className={"pb-2"}>
                             <PrimarySpecs
-                                boat_attributes={hit.specifications}
+                                boat_attributes={hit.attributes}
                                 status={hit.status}
                                 location={`${hit.location.city}, ${hit.location.state}`}
                                 manufacturer={hit.manufacturer.name}
@@ -136,16 +135,16 @@ const Hit = memo(({hit, sendEvent}: {
                                     descString.length ?
                                         <p className="text-sm">{descString}<a href={link}
                                                                               className={"font-bold"}
-                                                                              onClick={() => sendEvent('click', hit, 'Vehicle Clicked')}> READ
+                                                                              onClick={() => sendEvent('click', hit, 'Boat Clicked')}> READ
                                             MORE</a>
                                         </p>
                                         :
                                         <p className={"hit-description-p"}>
                                             Checkout
-                                            the {hit.name} by {hit.dealer.name} at {hit.location.city}, {hit.location.state} location...<a
+                                            the {hit.name} by {hit.location.dealer.name} at {hit.location.city}, {hit.location.state} location...<a
                                             href={link}
                                             className={"font-bold"}
-                                            onClick={() => sendEvent('click', hit, 'Vehicle Clicked')}> READ
+                                            onClick={() => sendEvent('click', hit, 'Boat Clicked')}> READ
                                             MORE</a>
                                         </p>
                                 }
@@ -168,7 +167,7 @@ const Hit = memo(({hit, sendEvent}: {
                                     href={link} onClick={() => sendEvent('click', hit, 'Vehicle Clicked')}
                                     className={"group flex items-center justify-between w-full text-[var(--mm-cta-view-boat-text)] bg-[var(--mm-cta-view-boat-bg)] hover:bg-[var(--mm-cta-view-boat-bg-hover)] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none text-center"}
                                 >
-                                    View {hit.type ?? 'Vehicle'} <IconNarrowRight
+                                    View Boat <IconNarrowRight
                                     className={"block transition-transform group-hover:translate-x-1 ease-in-out"}/>
                                 </a>
                             </div>
@@ -210,10 +209,10 @@ const Hit = memo(({hit, sendEvent}: {
                 }}
             >
                 <div ref={ref} className={"pb-10"}>
-                    <div className={" border-t"}></div>
-                    {hit?.specifications.length ? <AllSpecs specs={hit.specifications}/> :
+                    <div className={"border-t"}></div>
+                    {hit?.attributes?.length ? <AllSpecs specs={hit.attributes}/> :
                         <PrimarySpecs status={hit.status}
-                                      boat_attributes={hit.specifications}
+                                      boat_attributes={hit.attributes}
                                       location={hit.location.name}
                                       manufacturer={hit.manufacturer.name}
                                       stock_number={hit.stock_number}
