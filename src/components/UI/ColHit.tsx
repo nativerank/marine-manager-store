@@ -79,7 +79,6 @@ const ColHit = memo(({hit, sendEvent}: {
             <div className={"w-full basis-full lg:flex-1"}>
                 <div className="">
                     <div className={"mb-2 border-b pb-2"}>
-
                         <a href={link} className={"text-[#333] hover:text-[var(--mm-title-link-hover)]"}
                            onClick={() => sendEvent('click', hit, 'Boat Clicked')}>
                             <h2 className={"font-bold lg:font-bold "}>
