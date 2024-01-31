@@ -60,7 +60,7 @@ const Price: FC<{
                         <span className={"has-tooltip absolute right-0 top-0 translate-y-0.5 translate-x-[120%]"}>
                             <InfoIcon/>
                         <span
-                            className='tooltip bg-white drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)] border right-0  w-64 top-full p-3 rounded text-xs text-center'>Estimated monthly payments based on a 240-month loan at 7.99% APR.</span>
+                            className='tooltip bg-white drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)] border right-0  w-64 top-full p-3 rounded text-xs text-center'>Estimated monthly payments based on 20% Down-payment, a 240-month loan, at 7.99% APR.</span>
                         </span>
                     </button>}
                 </>}
