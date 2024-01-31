@@ -1,4 +1,4 @@
-import React, {FC, useMemo} from "react";
+import React, {FC} from "react";
 import {calculateMonthlyPayment, formatNumber} from "../../utils";
 import DollarRoundedIcon from "../Icons/DollarRoundedIcon";
 import classNames from "classnames";
@@ -9,11 +9,11 @@ const Price: FC<{
     status: string,
     usage: string,
     featured?: boolean
-    hit: any
-}> = ({price, status, featured, usage, hit}) => {
-    const link = useMemo(() => {
-        return `${(window as any).MM_DOMAIN}/${hit.usage.toLowerCase()}${(window as any).MM_USAGE_SLUG}/${hit.manufacturer.slug}/${hit.slug}`
-    }, [hit])
+    hit: any,
+    link: string,
+    hideMonthlyPayments?: boolean
+}> = ({price, status, featured, usage, hit, link, hideMonthlyPayments}) => {
+
     return (
         <div className={""}>
             {!price || price === 0 || status.toLowerCase() === 'call for price'
@@ -39,7 +39,7 @@ const Price: FC<{
                             className={"text-xs -top-2"}>$</sup>{formatNumber(price)}
                         </strong>
                     </div>
-                    {!('HIDE_MONTHLY_PAYMENTS' in window) && <button onClick={() => {
+                    {hideMonthlyPayments && <button onClick={() => {
                         window.dispatchEvent(new CustomEvent('get_financing', {
                             detail: {
                                 ...hit,
@@ -47,7 +47,7 @@ const Price: FC<{
                             }
                         }))
                     }}
-                                                                     className={"relative z-50 text-xs block text-right text-[var(--mm-monthly-payment-link)] hover:underline w-full lg:-ml-4"}>
+                                                    className={"relative z-50 text-xs block text-right text-[var(--mm-monthly-payment-link)] hover:underline w-full lg:-ml-4"}>
                         <sup className={"text-[.5rem] -top-1"}>$</sup><span
                         className={"font-bold"}>{formatNumber(calculateMonthlyPayment({
                         APR: .0625,

@@ -1,5 +1,4 @@
-import {history} from 'instantsearch.js/es/lib/routers';
-import {RouterProps} from "instantsearch.js/es/middlewares/createRouterMiddleware";
+// import {history} from 'instantsearch.js/es/lib/routers';
 
 export function formatNumber(number: string | number): string {
     return Number(number).toLocaleString();
@@ -39,12 +38,12 @@ export const getCDNImage = ({
 
 const indexName = 'prod_vehicles'
 
-export const routing: RouterProps = {
-    router: history({
-        createURL() {
-            return ``;
-        },
-    }),
+export const routing: any = {
+    // router: history({
+    //     createURL() {
+    //         return ``;
+    //     },
+    // }),
 };
 
 
@@ -59,10 +58,10 @@ export const calculateMonthlyPayment = ({
 }) => (amountFinanced * (APR / 12) * (Math.pow((1 + (APR / 12)), term)) / ((Math.pow((1 + (APR / 12)), term)) - 1)).toFixed(0)
 
 export const convertHtmlToString = (htmlString: any, slice = 250) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlString, 'text/html');
-    const textContent = doc.body.textContent || "";
-    return shortenString(textContent, slice);
+    // const parser = new DOMParser();
+    // const doc = parser.parseFromString(htmlString, 'text/html');
+    // const textContent = doc.body.textContent || "";
+    return shortenString(htmlString, slice);
 }
 
 export const shortenString = (inputString: any, maxLength: any) => {

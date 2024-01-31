@@ -21,17 +21,15 @@ type HitType = any | {
 export const BOAT_PLACEHOLDER_IMAGE = 'https://cdn.nativerank.com/image_coming_soon_HSUNu2mUx.jpg?tr=w-325'
 
 
-const ColHit = memo(({hit, sendEvent}: {
+const ColHit = memo(({hit, sendEvent, link}: {
     hit: HitType,
-    sendEvent: SendEventForHits
+    sendEvent: SendEventForHits,
+    link: string
 }) => {
 
     const descString = convertHtmlToString(hit.description ?? '', 140);
     const [viewDetailsTab, setViewDetailsTab] = useState(false);
     const [height, setHeight] = useState(0);
-    const link = useMemo(() => {
-        return `${(window as any).MM_DOMAIN}/${hit.usage.toLowerCase()}${(window as any).MM_USAGE_SLUG}/${hit.manufacturer.slug}/${hit.slug}`
-    }, [hit])
 
     const thumbImages = useMemo(() => {
         if (hit.images && Array.isArray(hit.images) && hit.images.length > 0) {
@@ -94,7 +92,7 @@ const ColHit = memo(({hit, sendEvent}: {
                             </div>
                         </div>
                         <div className={"flex-1"}>
-                            <Price hit={hit} usage={hit.usage} price={hit.price} status={hit.status}/>
+                            <Price link={link} hit={hit} usage={hit.usage} price={hit.price} status={hit.status}/>
                         </div>
                     </div>
                     <div className={"border-b relative"}>

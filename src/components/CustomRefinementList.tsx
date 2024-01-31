@@ -3,7 +3,6 @@ import {useRefinementList, UseRefinementListProps} from 'react-instantsearch';
 import Check from "./Icons/Check";
 import classNames from "classnames";
 import {RefinementListItem} from "instantsearch.js/es/connectors/refinement-list/connectRefinementList";
-import {mergeArrays} from "../utils";
 
 const CustomRefinementList = (props: UseRefinementListProps & { cacheRefinements?: string }) => {
 
@@ -32,7 +31,7 @@ const CustomRefinementList = (props: UseRefinementListProps & { cacheRefinements
         <>
 
             <ul>
-                {mergeArrays((window as any).REFINEMENT_CACHE?.[props.attribute], items).map((item: RefinementListItem | any) => (
+                {items.map((item: RefinementListItem | any) => (
                     <li key={item.label} className={"flex mt-3"}>
 
                         <div

@@ -14,7 +14,7 @@ const InfiniteList = (props: any) => {
                 <ul>
                     {hits.map((hit: any) => (
                         <li ref={sentinelRef} key={hit.objectID} className="ais-InfiniteHits-item">
-                            <Hit hit={hit} sendEvent={sendEvent}/>
+                            <Hit hit={hit} sendEvent={sendEvent} link={"/"}/>
                         </li>
                     ))}
                 </ul>
