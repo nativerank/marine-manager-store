@@ -7,5 +7,7 @@ export const SearchConfig: ConfigureProps = {
     attributesToSnippet: ['description:10'],
     snippetEllipsisText: "…",
     removeWordsIfNoResults: "allOptional",
-    hitsPerPage: 10
+    hitsPerPage: 10,
+    attributesToHighlight: ['name'],
+    // attributesToRetrieve: ['category', 'usage', 'slug'],
 }

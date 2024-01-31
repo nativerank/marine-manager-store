@@ -21,6 +21,8 @@ export const getCDNImage = ({
     url: string,
     transform?: string
 }) => {
+
+    url = encodeURI(url.trim())
     if (url.includes('cdn.nativerank.com')) {
 
         if (transform) {

@@ -7,6 +7,10 @@ const AllSpecs: FC<Props> = ({specs}) => {
 
     const quickSpecs = useMemo(() => {
         return specs.filter((spec) => {
+            if (spec.value === null) {
+                return false
+            }
+
             return spec.name.match(/color/gi)?.length || (!spec.value.includes('<') && spec.value.length < 20)
         })
     }, [specs])

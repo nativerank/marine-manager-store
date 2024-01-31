@@ -85,7 +85,7 @@ const Hit = memo(({hit, sendEvent}: {
                 {hit.featured ?
                     <div
                         className={"absolute -left-6 bottom-full lg:-bottom-4 bg-[var(--mm-featured-bg)] text-[var(--mm-featured-text)] px-2 py-1 uppercase text-sm tracking-wider shadow"}>
-                        Featured
+                        {hit.banner_text ?? 'Featured'}
                     </div> : ''}
             </div>
             <div className={"w-full basis-full lg:flex-1"}>
@@ -98,7 +98,7 @@ const Hit = memo(({hit, sendEvent}: {
                             </div>
                             {hit.featured ? <div
                                 className={"bg-[var(--mm-featured-bg)] ml-2 text-[var(--mm-featured-text)] inline-block px-2 uppercase text-sm  rounded"}>
-                                Featured
+                                {hit.banner_text ?? 'Featured'}
                             </div> : ''}
                             <a href={link} className={"text-[#333] hover:text-[var(--mm-title-link-hover)]"}
                                onClick={() => sendEvent('click', hit, 'Boat Clicked')}>

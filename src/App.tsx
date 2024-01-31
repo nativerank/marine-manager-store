@@ -28,7 +28,6 @@ const searchClient = algoliasearch(
 
 
 function App() {
-
     const containerRef = useRef<HTMLElement>(null);
     const headerRef = useRef(null);
     const [gridMode, setGridMode] = useState('list');
