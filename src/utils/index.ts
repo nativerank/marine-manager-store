@@ -39,7 +39,6 @@ export const getCDNImage = ({
     return url
 }
 
-const indexName = 'prod_vehicles'
 
 export const routing: RouterProps = {
     router: history({

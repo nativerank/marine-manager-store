@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React, {memo, useEffect} from "react";
 import {useSortBy} from "react-instantsearch";
 
 const SortByComponent = () => {
@@ -7,23 +7,29 @@ const SortByComponent = () => {
         items: [
             {
                 label: 'Sort By',
-                value: 'prod_vehicles',
+                value: 'prod_boats',
             },
             {
                 label: 'Recently Added',
-                value: 'prod_vehicles_latest',
+                value: 'prod_boats_latest',
             },
             {
                 label: 'Price: Low to High',
-                value: 'prod_vehicles_price_asc',
+                value: 'prod_boats_price_asc',
             },
             {
                 label: 'Price: High to Low',
-                value: 'prod_vehicles_price_desc',
+                value: 'prod_boats_price_desc',
             }
         ]
     }
     const {currentRefinement, options, refine} = useSortBy(props);
+
+    useEffect(() => {
+        if ('MM_SORT_BY_PRICE' in window) {
+            refine('prod_boats_price_asc')
+        }
+    }, []);
 
     return (
         <select
