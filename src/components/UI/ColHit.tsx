@@ -18,7 +18,7 @@ type HitType = any | {
     price: number;
     rating: string;
 };
-export const BOAT_PLACEHOLDER_IMAGE = 'https://cdn.nativerank.com/image_coming_soon_HSUNu2mUx.jpg?tr=w-325'
+export const BOAT_PLACEHOLDER_IMAGE = 'https://cdn.nativerank.com/Moto-Placeholder_G7EWLOHY5.jpg?updatedAt=1710168996938'
 
 
 const ColHit = memo(({hit, sendEvent}: {
