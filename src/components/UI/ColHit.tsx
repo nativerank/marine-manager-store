@@ -9,6 +9,7 @@ import MessageCheckIcon from "../Icons/MessageCheckIcon";
 import IconNarrowRight from "../Icons/IconNarrowRight";
 import DownArrow from "../Icons/DownArrow";
 import AllSpecs from "../Specs/AllSpecs";
+import classNames from "classnames";
 
 type HitType = any | {
     image: string;
@@ -67,8 +68,12 @@ const ColHit = memo(({hit, sendEvent}: {
 
     return (
         <div
-            className="hit relative mx-auto my-10 flex w-full gap-4 flex-wrap  justify-between rounded-xl border px-4 py-4
-            bg-gradient-to-b from-white via-gray-50 via-75% to-gray-100">
+            className={classNames("hit relative mx-auto my-10 flex w-full gap-4 flex-wrap  justify-between rounded-xl border px-4 py-4 bg-gradient-to-b from-white",
+                {
+                    'via-[var(--mm-featured-card-gradient-via-50)] to-[var(--mm-featured-card-gradient-to-100)] featured border-[var(--mm-featured-bg)]': hit.featured,
+                    'via-gray-50 via-75% to-gray-100': !hit.featured,
+                })}>
+
 
             <div className={"basis-full lg:flex-none"}>
                 <div className={"w-full lg:w-64"}>
@@ -87,6 +92,13 @@ const ColHit = memo(({hit, sendEvent}: {
                                 <Highlight attribute="name" highlightedTagName="mark" hit={hit}/>
                             </h2>
                         </a>
+
+
+                        {hit.featured ?
+                            <div
+                                className={" bg-[var(--mm-featured-bg)] text-[var(--mm-featured-text)] px-2 py-1 uppercase text-sm tracking-wider shadow z-10"}>
+                                {hit.banner_text ?? 'Featured'}
+                            </div> : ''}
                     </div>
                     <div className={"flex pb-1.5 divide-x gap-x-2 lg:gap-x-1 items-center"}>
                         <div className={"flex-none w-20"}>
@@ -96,7 +108,8 @@ const ColHit = memo(({hit, sendEvent}: {
                             </div>
                         </div>
                         <div className={"flex-1"}>
-                            <Price hit={hit} usage={hit.usage} price={hit.price} status={hit.status}/>
+                            <Price hit={hit} usage={hit.usage} featured={hit.featured} price={hit.price}
+                                   status={hit.status}/>
                         </div>
                     </div>
                     <div className={"border-b relative"}>
@@ -164,14 +177,24 @@ const ColHit = memo(({hit, sendEvent}: {
 
 
                 <button
-                    className={"left-1/2 " +
-                        "w-36 py-2 flex justify-center items-center gap-1 absolute bottom-0 translate-y-1 -translate-x-1/2 z-10 hover:before:bg-gray-200 before:absolute before:inset-y-0 before:w-[calc(100%-30px)] before:border before:border-gray-200 before:border-r-0 before:-left-[3px] before:-skew-x-[40deg] before:bg-white " +
-                        "after:absolute after:inset-y-0 hover:after:bg-gray-200 after:bg-white after:w-[calc(100%-30px)] after:border after:border-gray-200 after:-right-[3px] after:border-l-0 after:skew-x-[40deg]"}
+                    className={classNames("left-1/2 " +
+                        "w-36 py-2 flex justify-center items-center gap-1 absolute bottom-0 translate-y-1 -translate-x-1/2 z-10 hover:before:bg-gray-200 before:absolute before:inset-y-0 before:w-[calc(100%-30px)] before:border before:border-r-0 before:-left-[3px] before:-skew-x-[40deg] before:bg-white " +
+                        "after:absolute after:inset-y-0 hover:after:bg-gray-200 after:bg-white after:w-[calc(100%-30px)] after:border after:-right-[3px] after:border-l-0 after:skew-x-[40deg]",
+                        {
+                            'after:border-[var(--mm-featured-bg)] before:border-[var(--mm-featured-bg)]': hit.featured,
+                            'after:border-gray-200 before:border-[var(--mm-featured-bg)] before:border-gray-200': !hit.featured,
+                        })}
                     onClick={() => setViewDetailsTab(!viewDetailsTab)}>
+
                         <span
-                            className={"relative z-20 flex items-center gap-1"}>{viewDetailsTab ? 'Close' : 'Quick Look'}
+                            className={classNames("relative z-20 flex items-center gap-1", {
+                                'text-[var(--mm-featured-bg)]': hit.featured
+                            })}>{viewDetailsTab ? 'Close' : 'Quick Look'}
                             <DownArrow
-                                className={`${viewDetailsTab && 'rotate-180'} duration-150`}/></span>
+                                className={classNames(`duration-150`, {
+                                    'rotate-180': viewDetailsTab,
+                                    'text-[var(--mm-featured-bg)]': hit.featured
+                                })}/></span>
                 </button>
             </div>
 
