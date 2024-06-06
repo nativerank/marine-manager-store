@@ -41,7 +41,7 @@ const ColHit = memo(({hit, sendEvent}: {
                 return getCDNImage({
                     url: image,
                     transform: 'w-800,h-614'
-                }).replace(' ', '%20')
+                }).replaceAll(' ', '%20')
 
             })
         }

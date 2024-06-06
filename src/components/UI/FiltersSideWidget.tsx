@@ -103,5 +103,4 @@ const FiltersSideWidget = () => {
         </div>
     )
 }
-
 export default memo(FiltersSideWidget)
