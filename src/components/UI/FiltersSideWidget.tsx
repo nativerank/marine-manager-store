@@ -7,11 +7,12 @@ import CustomRefinementList from "../CustomRefinementList";
 import CustomSwitch from "../CustomSwitcher";
 import CustomHierarchicalMenu from "../CustomHierarchicalMenu";
 import Panel from "../../SideFilter/Panel";
+import LocationRefinementList from "../LocationRefinementList";
 
 const FiltersSideWidget = () => {
 
     const currentRefinementsApi = useCurrentRefinements({
-        includedAttributes: ['location.city', 'status', 'lvl0', 'lvl1'],
+        includedAttributes: ['location.city', 'location.display_name', 'status', 'lvl0', 'lvl1'],
     });
 
 
@@ -45,11 +46,10 @@ const FiltersSideWidget = () => {
                     borderTop
                     title={"Location"}
                     expanded
-
-                    selectedItems={getSelectedItems('location.city')}
+                    selectedItems={getSelectedItems('location.display_name')}
                     refine={currentRefinementsApi.refine}>
-                    <CustomRefinementList cacheRefinements={'location.city'} attribute="location.city"
-                                          sortBy={["name"]}/>
+                    <LocationRefinementList cacheRefinements={'location.display_name'} attribute="location.display_name"
+                                            sortBy={["name"]}/>
                 </CollapsiblePanel>
 
 
