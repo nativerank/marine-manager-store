@@ -36,7 +36,7 @@ const Price: FC<{
                         <strong className={"font-bold"}><sup className={"text-xs -top-2"}>$</sup>{formatNumber(price)}
                         </strong>
                     </div>
-                    <button onClick={() => {
+                    {!("HIDE_MONTHLY_PAYMENTS" in window) && <button onClick={() => {
                         window.dispatchEvent(new CustomEvent('get_financing', {
                             detail: {
                                 ...hit,
@@ -53,7 +53,7 @@ const Price: FC<{
                         <span className={"block"}>
                             get financing
                         </span>
-                    </button>
+                    </button>}
                 </>}
         </div>
     )
