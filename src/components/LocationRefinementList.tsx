@@ -5,7 +5,7 @@ import classNames from "classnames";
 import {RefinementListItem} from "instantsearch.js/es/connectors/refinement-list/connectRefinementList";
 import {mergeArrays} from "../utils";
 
-const CustomRefinementList = (props: UseRefinementListProps & { cacheRefinements?: string }) => {
+const LocationRefinementList = (props: UseRefinementListProps & { cacheRefinements?: string }) => {
 
     const {
         items,
@@ -16,9 +16,6 @@ const CustomRefinementList = (props: UseRefinementListProps & { cacheRefinements
     } = useRefinementList(props);
 
     useEffect(() => {
-        // if (props.cacheRefinements && !('REFINEMENT_CACHE' in window)) {
-        //     (window as any).REFINEMENT_CACHE = {}
-        // }
 
 
         if (props.cacheRefinements && items.length && 'REFINEMENT_CACHE' in window && props.cacheRefinements in (window as any).REFINEMENT_CACHE && (window as any).REFINEMENT_CACHE[props.cacheRefinements].length === 0) {
@@ -27,6 +24,7 @@ const CustomRefinementList = (props: UseRefinementListProps & { cacheRefinements
             // (window as any).REFINEMENT_CACHE[props.attribute] = []
         }
     }, [items]);
+
 
     return (
         <>
@@ -51,7 +49,7 @@ const CustomRefinementList = (props: UseRefinementListProps & { cacheRefinements
                                         className={classNames(
                                             `custom-control-indicator custom-control-indicator-checkbox mr-2`,
                                             {
-                                                'bg-[var(--mm-filter-accent)] border-transparent': item.isRefined,
+                                                'bg-blue-900 border-transparent': item.isRefined,
                                                 'bg-white': !item.isRefined
                                             }
                                         )}
@@ -77,7 +75,6 @@ const CustomRefinementList = (props: UseRefinementListProps & { cacheRefinements
 
                 ))}
             </ul>
-
             {props.showMore && <button onClick={toggleShowMore} disabled={!canToggleShowMore}>
                 {isShowingMore ? 'Show less' : 'Show more'}
             </button>}
@@ -85,4 +82,4 @@ const CustomRefinementList = (props: UseRefinementListProps & { cacheRefinements
     );
 }
 
-export default CustomRefinementList
+export default LocationRefinementList

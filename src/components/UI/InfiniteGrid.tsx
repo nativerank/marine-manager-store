@@ -32,13 +32,12 @@ function InfiniteGrid(props: any) {
             </div>
             {!isLastPage && <div style={{textAlign: 'center', paddingTop: 30}}>
                 <a style={{
-                    background: '#1d45f9',
-                    color: '#fff',
                     padding: '0 20px',
                     lineHeight: '36px',
                     display: 'inline-block',
                     cursor: 'pointer'
                 }}
+                   className={"bg-[var(--mm-cta-show-more-bg)] hover:bg-[var(--mm-cta-show-more-bg-hover)] text-[var(--mm-cta-show-more-text)]"}
                    onClick={() => showMore()}
                 >
                     Show More

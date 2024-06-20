@@ -31,7 +31,7 @@ const App = () => {
 
     const containerRef = useRef<HTMLElement>(null);
     const headerRef = useRef(null);
-    const [gridMode, setGridMode] = useState('list');
+    const [gridMode, setGridMode] = useState<'grid' | 'list'>('list');
 
 
     const openFilters = useCallback(() => {
@@ -84,6 +84,7 @@ const App = () => {
             future={{
                 preserveSharedStateOnUnmount: true
             }}>
+            {/*@ts-ignore*/}
             <Configure {...SearchConfig}/>
             <CarouselSchema/>
             <ScrollTo>

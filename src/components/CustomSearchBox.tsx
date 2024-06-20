@@ -58,7 +58,7 @@ function CustomSearchBox(props: UseSearchBoxProps) {
                     ></path>
                 </svg>
             </div>
-            <label htmlFor="search-boats" className="sr-only">Search Boats</label>
+            <label htmlFor="search-boats" className="sr-only">Search boats...</label>
 
 
             <input
