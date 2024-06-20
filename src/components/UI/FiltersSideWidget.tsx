@@ -12,7 +12,7 @@ import LocationRefinementList from "../LocationRefinementList";
 const FiltersSideWidget = () => {
 
     const currentRefinementsApi = useCurrentRefinements({
-        includedAttributes: ['location.city', 'location.display_name', 'status', 'lvl0', 'lvl1'],
+        includedAttributes: ['location.city', 'location.display_name', 'category', 'status', 'lvl0', 'lvl1'],
     });
 
 
@@ -82,10 +82,10 @@ const FiltersSideWidget = () => {
                     <RangeInput
                         attribute={'year'}
                         classNames={{
-                            form: 'flex',
+                            form: 'flex gap-2',
                             input: 'w-full',
                             label: 'flex-1',
-                            submit: 'px-4 bg-blue-800 block text-white py-2'
+                            submit: 'px-4 bg-blue-800 block text-white py-3'
                         }}
                     />
                 </Panel>

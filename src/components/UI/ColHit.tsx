@@ -9,6 +9,7 @@ import MessageCheckIcon from "../Icons/MessageCheckIcon";
 import IconNarrowRight from "../Icons/IconNarrowRight";
 import DownArrow from "../Icons/DownArrow";
 import AllSpecs from "../Specs/AllSpecs";
+import classNames from "classnames";
 
 type HitType = any | {
     image: string;
@@ -49,8 +50,9 @@ const ColHit = memo(({hit, sendEvent}: {
     }, [hit.images])
 
     const atLeastOneImageExists = useMemo(() => {
-        return thumbImages
+        return thumbImages.length
     }, [thumbImages])
+
 
     const moreThanOneImageExists = useMemo(() => {
         return thumbImages?.length > 1
@@ -66,8 +68,12 @@ const ColHit = memo(({hit, sendEvent}: {
 
     return (
         <div
-            className="hit relative mx-auto my-10 flex w-full gap-4 flex-wrap  justify-between rounded-xl border px-4 py-4
-            bg-gradient-to-b from-white via-gray-50 via-75% to-gray-100">
+            className={classNames("hit relative mx-auto my-10 flex w-full gap-4 flex-wrap  justify-between rounded-xl border px-4 py-4 bg-gradient-to-b from-white",
+                {
+                    'via-[var(--mm-featured-card-gradient-via-50)] to-[var(--mm-featured-card-gradient-to-100)] featured border-[var(--mm-featured-bg)]': hit.featured,
+                    'via-gray-50 via-75% to-gray-100': !hit.featured,
+                })}>
+
 
             <div className={"basis-full lg:flex-none"}>
                 <div className={"w-full lg:w-64"}>
@@ -80,22 +86,30 @@ const ColHit = memo(({hit, sendEvent}: {
                 <div className="">
                     <div className={"mb-2 border-b pb-2"}>
 
-                        <a href={link} className={"text-[#333] hover:text-amber-600"}
+                        <a href={link} className={"text-[#333] hover:text-[var(--mm-title-link-hover)]"}
                            onClick={() => sendEvent('click', hit, 'Boat Clicked')}>
                             <h2 className={"font-bold lg:font-bold "}>
                                 <Highlight attribute="name" highlightedTagName="mark" hit={hit}/>
                             </h2>
                         </a>
+
+
+                        {hit.featured ?
+                            <div
+                                className={" bg-[var(--mm-featured-bg)] text-[var(--mm-featured-text)] px-2 py-1 uppercase text-sm tracking-wider shadow z-10"}>
+                                {hit.banner_text ?? 'Featured'}
+                            </div> : ''}
                     </div>
                     <div className={"flex pb-1.5 divide-x gap-x-2 lg:gap-x-1 items-center"}>
                         <div className={"flex-none w-20"}>
                             <div
-                                className={"bg-amber-600 text-amber-50 inline-block px-2 uppercase text-sm shadow-amber-500 shadow-sm rounded"}>
+                                className={"bg-[var(--mm-usage-badge-bg)] text-[var(--mm-usage-badge-text)] inline-block px-2 uppercase text-sm shadow-[var(--mm-usage-badge-shadow)] shadow-sm rounded"}>
                                 {hit.usage}
                             </div>
                         </div>
                         <div className={"flex-1"}>
-                            <Price hit={hit} price={hit.price} status={hit.status}/>
+                            <Price hit={hit} usage={hit.usage} featured={hit.featured} price={hit.price}
+                                   status={hit.status}/>
                         </div>
                     </div>
                     <div className={"border-b relative"}>
@@ -105,16 +119,20 @@ const ColHit = memo(({hit, sendEvent}: {
                         <div className={"pb-2"}>
                             <PrimarySpecs
                                 compact
+                                stock_number={hit.stock_number}
                                 status={hit.status}
                                 location={`${hit.location.city}, ${hit.location.state}`}
                                 manufacturer={hit.manufacturer.name}
                                 year={hit.year}
+                                boat_attributes={hit.attributes}
                             />
                         </div>
                         <div className={"border-b relative"}>
                         </div>
                         <div className={"pt-4 flex gap-4 flex-wrap"}>
-                            <div className={"basis-full lg:flex-1 hidden"}>
+                            <a href={link}
+                               onClick={() => sendEvent('click', hit, 'Boat Clicked')}
+                               className={"basis-full lg:flex-1 hidden"}>
                                 {
                                     descString.length ?
                                         <p className="text-sm">{descString}<strong> READ
@@ -127,10 +145,10 @@ const ColHit = memo(({hit, sendEvent}: {
                                             MORE </strong>
                                         </p>
                                 }
-                            </div>
+                            </a>
                             <div className={"w-full pb-4"}>
                                 <button
-                                    className={"justify-center text-center flex items-center gap-2 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3.5 me-2 mb-2 focus:outline-none"}
+                                    className={"justify-center text-center flex items-center gap-2 w-full text-[var(--mm-cta-check-availability-text)] bg-[var(--mm-cta-check-availability-bg)] hover:bg-[var(--mm-cta-check-availability-bg-hover)] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3.5 me-2 mb-2 focus:outline-none"}
                                     onClick={() => {
                                         window.dispatchEvent(new CustomEvent('check_availability', {
                                             detail: {
@@ -144,7 +162,7 @@ const ColHit = memo(({hit, sendEvent}: {
                                 </button>
                                 <a
                                     href={link} onClick={() => sendEvent('click', hit, 'Boat Clicked')}
-                                    className={"group flex items-center justify-between w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none text-center"}
+                                    className={"group flex items-center justify-between w-full text-[var(--mm-cta-view-boat-text)] bg-[var(--mm-cta-view-boat-bg)] hover:bg-[var(--mm-cta-view-boat-bg-hover)] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none text-center"}
                                 >
                                     View Boat <IconNarrowRight
                                     className={"block transition-transform group-hover:translate-x-1 ease-in-out"}/>
@@ -183,6 +201,8 @@ const ColHit = memo(({hit, sendEvent}: {
                     {hit?.attributes.length ? <AllSpecs specs={hit.attributes}/> :
                         <PrimarySpecs status={hit.status} location={hit.location.name}
                                       manufacturer={hit.manufacturer.name}
+                                      stock_number={hit.stock_number}
+                                      boat_attributes={hit.attributes}
                                       year={hit.year}/>}
                     <div className={"border-t pt-4 mt-4 pb-8"}>
                         {

@@ -47,12 +47,62 @@
         window.MM_DOMAIN = 'https://www.awsboatsco.com'
         window.refinementList = {}
         window.hierarchicalMenu = {}
+        window.HIDE_MONTHLY_PAYMENTS = true
         window.REFINEMENT_CACHE = {
             'location.city': []
         }
     </script>
 </head>
 <body>
+
+<style>
+    :root {
+        /* View Boat CTA */
+        --mm-cta-view-boat-bg: #1753c8;
+        --mm-cta-view-boat-bg-hover: #1044a8;
+        --mm-cta-view-boat-text: #fff;
+
+        /* Check Availability CTA */
+        --mm-cta-check-availability-bg: var(--mm-cta-view-boat-bg);
+        --mm-cta-check-availability-bg-hover: var(--mm-cta-view-boat-bg-hover);
+        --mm-cta-check-availability-text: var(--mm-cta-view-boat-text);
+
+        /* Usage Badge */
+        --mm-usage-badge-bg: rgb(242, 242, 242);
+        --mm-usage-badge-shadow: transparent;
+        --mm-usage-badge-text: rgb(41, 171, 226);
+
+        /* Title Link */
+        --mm-title-link-hover: var(--mm-cta-view-boat-bg);
+
+        /* Monthly Payments Text Link */
+        --mm-monthly-payment-link: rgb(23 37 84);
+
+        /* Request Princing CTA */
+        --mm-cta-request-pricing-bg: rgb(23 37 84);
+        --mm-cta-request-pricing-shadow: #1C64F2;
+        --mm-cta-request-pricing-bg-hover: rgb(217 119 6);
+        --mm-cta-request-pricing-text: #fff;
+
+        /* Featured Color */
+        --mm-featured-bg: rgb(28 100 242);
+        --mm-featured-text: #fff;
+
+        /* Featured Card Gradient */
+        --mm-featured-card-gradient-to-100: #E1EFFE;
+        --mm-featured-card-gradient-via-50: #EBF5FF;
+
+        /* Filters */
+        --mm-filter-accent: rgb(35 56 118);
+
+        /* Show More */
+        --mm-cta-show-more-bg: rgb(28 100 242);
+        --mm-cta-show-more-bg-hover: rgb(23 37 84);
+        --mm-cta-show-more-text: #fff;
+
+
+    }
+</style>
 <!--    <noscript>You need to enable JavaScript to run this app.</noscript>-->
 <div id="root"></div>
 <!--
